@@ -1,0 +1,1790 @@
+============================================================
+CHUNK 1 (page: 0)
+============================================================
+Revision on Integration 
+Prepared by Dr.Hany Abd El Ghaffar El Deeb 
+TECHNIQUES OF INTEGRATION  
+ I summarize here the most impo rtant integrals that we nee 
+ 1
+                                                                
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Example:   Evaluate the following integrals. 
+n1
+(1)   
+3cos 4x .sin 4x dx (2) 9 dxx  
+(3)     1 dxxl nx  (4)     sin 2x dx
+10 4cos 2x  
+(5)     sin 2x dx10 4cos 2x  (6)     
+24xx.e dx  
+(7)       3x4d x (8)     
+tan x
+2
+6 dx.cos x  
+(1) n xxd x C .n1  n1         
+(2)   
+n1
+n fxfx . f ' x d x C . n1
+
+    n1         
+   fx fx
+e. f ' x d x e C .  (3) 
+   fx fx
+a. f ' x . l n a d x a C .   (4) 
+
+ (5) 
+f' x dx ln f x C.fx 
+
+============================================================
+CHUNK 2 (page: 1)
+============================================================
+Solution: 
+(1)  cos 4x .sin 4x dx
+3
+
+31 cos 4x 4sin 4x dx4     
+ 
+
+4
+cos 4x1 .C44   
+(2) 91dx 9 dx 9ln x C.xx 
+   
+(3) 
+1
+1x xdx dx ln ln x C.xl nx l nx x
+  
+  
+(4) 
+   
+12sin 2x dx sin 2x . 10 4cos 2x dx
+10 4cos 2x
+
+
+  
+    
+121 8sin 2x . 10 4cos2x dx8
+
+   
+ 
+12
+12
+10 4cos 2x1.C8
+ . 
+(5) sin 2x dx10 4cos 2x 
+1 ln 10 4cos 2x C.8    
+(6) 
+224x 4x1x . ed x 8 x . ed x8
+24x1 eC8
+ .   
+(7) 
+3x 3x14 dx 4 . 3 .ln 4dx3ln4
+3x1 4C3ln4
+ .   
+ 2
+
+============================================================
+CHUNK 3 (page: 2)
+============================================================
+(8) 
+tan x
+tan x 2
+2
+61 dx 6 .sec x.ln 6dxcos x ln 6
+tan x1 6Cln 6
+ .   
+Exercises: Evaluate the following integrals. 
+(1)   
+32tan 4x .sec 4x dx (2)     
+1x
+2
+e dxx
+
+  
+(3)     3
+1 dxxl n x  (4)     
+2x2 dxx1
+
+  
+Rules of Integration. 
+                                        
+ 3
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Prepared by Dr.Hany El Deeb 
+(1)    sin xdx cos x C  cos xdx sin x C.   (2)    
+(3)     2sec xdx tan x C
+2cosec xdx cot x C.   (4)  
+(5)      sec x tan xdx cosecx cot xdx
+co
+sexx C.se
+c x C
+(6)   
+ 
+  
+(7)    sinh xdx cosh x C cosh xdx sinh x C   (8)  
+(9)   2sech xdx tanh x C 
+2cosech xdx coth x C (10)
+(11)  s e ch xt a n hx d x
+sechx C 
+ cosechx coth xdx
+cosechx C.
+(12)  
+ 
+
+
+============================================================
+CHUNK 4 (page: 3)
+============================================================
+Example:   Evaluate the following integrals.  
+(1)  
+sin x
+dx
+x  (2)    sec 4x tan 4x dx  
+(3)   
+22x.sech 4x dx (4)   sinh 8x dx  
+(5)   
+4x 2 4xe. c o s e c e d x  
+Solution:                          Prepared by Dr.Hany El Deeb 
+(1) 
+ 
+sin x 1dx 2 sin x dx
+x2 x
+ 2cos x C .   
+(2)    1sec 4x tan 4x dx 4sec 4x tan 4x dx4  
+ 1 sec 4x C.4  
+(3)  
+22 221xs e ch 4x d x 8 xs e ch 4x d x8  
+ 
+21 tanh 4x C.8
+   
+(4)  1sinh 8x dx 8sinh 8x dx8 1 cosh 8x C.8   
+(5)  
+4x 2 4x 4x 2 4x1e .cosec e dx 4e cosec e dx4  
+ 4
+
+============================================================
+CHUNK 5 (page: 4)
+============================================================
+
+4x1 cot e C.4
+     Prepared by Dr.Hany El Deeb    Prepared by Dr.Hany El Deeb 
+Rules of  Integration. 
+ 
+ 5
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Prepared by Dr.Hany El Deeb 
+ 
+(1) 1
+22
+dx x sin C. aax
+    
+(2) 1
+22
+dx xcosh C. axa
+  
+
+  
+(3) 1
+22
+dx xsinh C. axa
+  
+
+  
+(4) 1
+22
+11 xdx tan C.ax a a
+     
+(5) 1
+22
+11 x tanh C.    
+ax
+a a 
+(6) 111
+22 aaxx
+a 
+x C.dx sec  
+   
+(7) 1
+22
+11 x dx sech C.aaxa x
+   
+
+  
+(8) 1
+22
+11 x dx cosech C.aaxa x
+   
+
+
+
+============================================================
+CHUNK 6 (page: 5)
+============================================================
+Example:   Evaluate the following integrals. 
+(1)  2
+1 dx9x  (2)   
+
+2
+cos 3x dx
+16 sin 3x  
+(3) 
+ 
+2
+1 dx
+4x 1 4x 1 10   (4)   
+
+2
+2
+sec 3x dx
+25 tan 3x  
+Solution:                         Prepared by Dr.Hany El Deeb 
+(1) 1
+22 2
+11 1 xdx dx tan C.9x 3 x 3 3
+   
+   
+(2) 
+
+ 
+
+2222
+c o s3 x 3 c o s3 x1dx dx34s i n 3 x 4s i n 3 x
+
+  
+ 11s i n 3 x.sin C.34
+  
+ 
+(3) 
+   
+22
+1 1 4dxdx 44x 1 4x 1 10 4x 1 4x 1 10
+
+     
+ 111 4 x 1.s e c4 10 10
+  
+ C 
+ 
+ 
+ 6
+
+============================================================
+CHUNK 7 (page: 6)
+============================================================
+The substitution rule           Prepared by Dr.Hany El Deeb 
+Example:  Evaluate the following Integrals. 
+(1)  xx 2 d x  (2)   
+2t2 2 t d t   
+(3)  32x4 x d x  (4)  dx
+1x  
+Solution: 
+(1)  Let x-2 = y  dx = dy
+  x x 2dx y 2 ydy   
+ 
+53223 122 yyy2 y d y 2 . 5322
+  
+ C 
+  
+5322
+x2 x2 2. C.5322
+   
+(2)  Let  y = 2 - t    dy = -dt
+   
+22t 2 2 tdt 2 y 2 y dy        
+   
+12244 yy 2 y d y     
+
+35122 22y 4y y dy  
+35 722 2yy y2. 4. C.35 722 2
+
+   
+ 
+            
+    
+3522
+2t 2t 2t2. 4. C35 722 2
+     
+
+7 2
+ . 
+ 7
+
+============================================================
+CHUNK 8 (page: 7)
+============================================================
+(3)  2Let y = 4 - x   dy = -2x dx
+ 32 2 2x 4 x dx x . 4 x .xdx    
+  
+2 124y y d y   
+3122 1
+22y y dy   
+ 
+3522
+1
+2
+yy2y . C.3522
+
+  
+
+ 
+3522
+1
+2
+2t 2t2. 3522
+  C . 
+
+
+ 
+ 
+(4) 22Let y 1 x x y 1     
+         
+212ydy dx dx 4y 4y y 1 dy
+2x
+     
+  
+2
+24y y 1 dydx 4y 1 d yy1x
+
+ 
+    
+32
+3 121xy4y C 4 1 x33
+          
+C .  
+Integration by parts. 
+ Every differentiation rule has a corresponding integration 
+rule. For Instance, the substi tution Rule for Integration 
+corresponds to the chain rule for differentiation. The rule that 
+corresponds to the product rule for differentiation is called the 
+rule for Integration by parts. If  U, V are differentiable functions 
+of x then  
+ 8
+
+============================================================
+CHUNK 9 (page: 8)
+============================================================
+d uv u.v' v.u 'dx   
+  d uv uv ' v.u ' dx  
+uv udv vdu   
+udv uv vdu.  
+ 
+Example:   Evaluate the following Integrals. 
+(1)   x.sin 2x dx (2)  ln xdx  
+(3)   xe cos xdx (4)  1tan xdx
+  
+Remark                               Prepared by Dr.Hany El Deeb 
+
+ 
+4x
+4x
+4x
+Integ Integ
+e. 4 7 c o s 7 x
+cos 7xeeC sin 7x47
+ C      
+Solution     (1) xs in 2x d x  
+  ux d vs i n 2 x d x  
+  cos 2xdu dx v 2   
+ 9
+
+============================================================
+CHUNK 10 (page: 9)
+============================================================
+    xc o s 2x c o s 2xx sin 2x dx dx 22    
+                                   xc o s 2x s i n 2x C.24    
+(2)          ln xdx Prepared by Dr.Hany El Deeb 
+  ul n x d vd x
+ 1du dx v xx  
+  ln xdx x.ln x dx
+ 
+                xl nx x C . 
+(3)  xIe c o s x d  x
+ 
+  xu e dv cos xdx
+  xdu e dx v sin x
+                                             (1) xxI e sin x e sin xdx 
+                                  By parts again  
+  xu e dv sin xdx
+  xdu e dx v cos x
+ xx xe sin xdx e cos x e cos xdx                       (2) 
+ From (2) in (1) we get  
+ 10
+
+============================================================
+CHUNK 11 (page: 10)
+============================================================
+11
+I xxIe s i n xe c o s x  
+xx x 1
+2I e cos xdx e sin x e cos x C.      
+(4)  1tan xdx
+
+  1ut a n x d vd x
+ 2
+1du dx v x1x 
+ 
+ 11
+2
+xtan xdx x tan x dx 1x
+    
+ 12 1
+2xt a n x l n1 x C .    
+Trigonometric and Hyperbolic Integrals. 
+Example:  Evaluate the following integrals. 
+(1)    tan 3x dx (2)   tanh xdx  
+(3)    cot xdx (4)    coth 6x dx  
+(5)    sexdx (6)   sechxdx  
+(7)    cosec x dx (8)   cosech x dx  
+ 
+Solution:
+
+============================================================
+CHUNK 12 (page: 11)
+============================================================
+(1)   
+
+3sin 3x1tan 3x dx dx 3 cos 3x
+  1 ln cos 3x C.3   
+(2) sinh xtanh xdx dx cosh x ln cosh x C.   
+(3) cos xcot xdx dx sin x ln sin x C.   
+(4)   
+
+6cosh 6x1coth 6x dx dx 6s i n h 6 x 1 ln sinh 6x C.6   
+(5) 
+
+sec x sec x tan xsec xdx dx sec x tan x
+   
+ 
+2sec x sec x tan x dx ln sec x tan x C.sec x tan x
+ 
+    
+(6) 2
+1c o s hsechxdx dx dxcosh x cosh x 
+x  
+ 
+1
+2
+cosh x dx tan sinh x C.1s i n h x
+    
+(7)  cosecx cosecx cot xcosecxdx dx cosecx cot x
+   
+ 
+2cosec x cosecx cot x dxcosecx cot x
+   
+ ln cosecx cot x C.   
+ 12
+
+============================================================
+CHUNK 13 (page: 12)
+============================================================
+(8)  cosechx cosechx coth xcosechxdx dx cosechx coth x
+   
+2cosech x cosechx coth x dxcosechx coth x
+  ln cosechx coth x C.   
+Important rules. 
+ 13
+(1)  
+2 1
+2sin x 1 cos 2x  (2)    
+2 1
+2cos x 1 cos 2x  
+(3)    
+2 1
+2nh x cosh 2x 1si  (4)    
+2 1
+2cosh x cosh 2x 1   
+(5)    22tan x sec x 1 (6)   22cot x cosec x 1   
+(7)    22tanh x 1 sech x (8)   22coth x cosech x 1   
+(9)      1
+2i n a x s i n b x c o sa bx c o sa bx   s  
+(10)     1
+2ax sinh bx sinh a b x sinh a b x  sinh  
+(11)     1
+2i n a x c o s b x s i na bx s i na bx  s  
+(12)      1
+2ax cosh bx sinh a b x sinh a b x  sinh  
+(13)      1
+2cosax cos bx cos a b x cos a b x    
+(14)      1
+2cosh ax cosh bx cosh a b x cosh a b x      
+
+============================================================
+CHUNK 14 (page: 13)
+============================================================
+Example:  Evaluate the following Integrals. 
+(1)    
+2sin 3x dx (2)    
+2tan 4x dx  
+(3)     sin 5x cos 7x dx (4)   cosh x cosh 2x dx  
+Solution: 
+(1)  2s i n 3 xd x 1 c o s 6 xd x
+2 1 1
+2
+sin 6xxC 6
+ .  
+ 
+(2)   tan 4x dx sec 4x 1 dx 
+22
+1 tan 4x x C.4   
+(3)      1
+2sin 5x cos 7x dx sin 12x sin 2x dx     
+  11
+22
+1 cos 12x cos 2x C12
+  
+ 
+Example:   Evaluate the following Integrals. 
+(1)    3cos xdx (2)   4sin xdx  
+Solution: 
+(1)  
+32cos xdx cos x. 1 sin x dx  
+  cos xdx cos x sin x dx
+2  
+3
+sin xsin x C. 3   
+ 14
+
+24 1
+2sin xdx 1 cos 2x dx   (2)
+
+============================================================
+CHUNK 15 (page: 14)
+============================================================
+
+21
+4 1 2cos 2x cos 2x dx   
+  11 1
+42 21 2cos 2x cos 4x dx    
+ 1
+4
+3s i n 4 xxs i n 2 x C28
+ 
+ .
+valuating 
+ is odd let u = cos   
+(2) If n is odd let u = sin x 
+(3) If m, n are both odd: m > n Let u = m 
+E mnsin x cos xdx.  
+(1) If m  x
+ 
+2 1
+2sin x 1 cos 2x  (4) If m, n are both even, use  
+ 15
+      
+2 1
+2cos x 1 cos 2x  ,sin 2x 2sin x cos x.  
+Example : Evaluate. 
+(2)(1)   35sin x cos xdx     25sin x cos xdx  
+(3)    24sin x cos xdx (4)   3cos x. sin x d x  
+tion:Solu  
+Let   ,   
+(1) 35sin x cos xdx  
+   uc o s x du sin xdx   
+ 
+25sin x.cos x.sin xdx  
+251u u d u 
+
+============================================================
+CHUNK 16 (page: 15)
+============================================================
+
+68
+57 uuuu d u 68
+      C
+    
+68cos x cos x C.68
+  
+  
+(2)               Prepared by Dr.Hany El Deeb25sin x.cos xdx  
+ Let  u sin x , du cos xdx  
+  
+22x. cos x .cos xdx  2sin 
+   
+222 2 4 2u.1 u . d u u 1 u 2 u d u     
+ 
+64 2u2 uu d  u
+75 3uu u 2. C75 3
+   
+ 
+   
+73
+5s i nx s i nx2 sin x C.75 3
+
+
+
+ 
+ 
+(3)  
+224 2sin x.cos xdx sin x cos x cos xdx  
+2
+sin 2x 1 cos2x dx22
+          
+  
+221 sin 2x sin 2x .cos 2x dx8
+    
+   
+21
+2
+1 1c o s 4 x s i n 2 x. c o s 2 x d x8
+    
+ 16
+
+============================================================
+CHUNK 17 (page: 16)
+============================================================
+ 
+31
+2
+sin 4x11 xs i n 2 x88 6
+  
+
+  
+ C.
+4) ( 3cos x. sin x dx Let u sin x , du cos xdx   
+ 
+3722
+2 uu1u u d u C 3722
+    .
+  
+3722
+sin x sin x C.3722
+  
+ 
+valuating E mntan x.sec xdx  , mncot x.cosec xdx  
+Example: Evaluate. 
+(1)            (2)     64tan x.sec xdx
+57tan .sec d   
+(3) 
+Solution:
+33cot x.cosec xdx.  
+ 17
+                   Prepared by Dr.Hany El Deeb 
+(1) 62 2tan x.sec .sec xdx  
+62 2tan x. 1 tan x sec xdx  
+   tan x .sec xdx tan x .sec xdx  
+68 22
+ 
+79
+tan x tan x C.79   
+ 
+2) ( .57tan .sec d  46tan sec .sec tan d   
+
+============================================================
+CHUNK 18 (page: 17)
+============================================================
+18
+  
+42 6sec 2sec 1 sec .sec .tan d        
+   
+10 8sec .sec tan d 2 sec sec tan d          
+      
+ 
+ 
+6sec sec tan d    
+   
+11 9 7
+se c sec sec2. C.11 9 7
+     
+3) 33cot x.cosec xdx
+22cot x.cosec x.cosec x cot xdx   (
+
+4
+cosecx .cosecx.cot xdx  
+2
+cosecx .cosecx cot xd  x    
+ 
+53
+cosecx cosecx C.53    
+Trigonometric Substitution. 
+ Integrals of the form  
+(1) 22ax d x      (2)  
+22xa d 22ax d xx    (3)  
+(1) To eliminate the root in (1) use  
+x = a sin  or   x = a cos   or  x = a tanh  
+(2) To elim = a cosh  inate the root in (2) use  x = a sec    or   x 
+(3) To eliminate the root in (3) use  x = a tan    or   x = a sinh 
+
+============================================================
+CHUNK 19 (page: 18)
+============================================================
+19
+xample:E   Evaluate the following Integrals. 
+(1) 
+2
+2
+9x dxx
+
+        (2)   
+22
+1 dx
+xx 4      (3) 
+22
+1 dx
+xx 9   
+Solution                            Prepared by Dr.Hany El Deeb 
+ (1
+ 
+) Let x 3sin , dx 3cos d     
+22
+22
+9x 99 s i ndx .3cos dx9 s i n
+      
+2
+2
+31 s i n .3cos d9sin
+   
+ 
+2
+2
+2
+cos dc o t dsin
+     
+ 
+ 
+                   3 
+                x 
+  
+2cosec 1 d cot     C    
+ 
+2
+19x x sin C.x3
+     
+ 
+(2) Let  x = 2 tan    ,   dx = 2 sec2 d 
+ 
+2
+22 2 2
+11 .2secdx d
+xx 4 4 t a n 4 t a n 4
+
+    
+ 
+22
+22
+1 sec 1 1 cos d.4 tan .sec 4 cos sin
+  d   
+
+ 
+  
+                         
+              
+  
+29x
+
+============================================================
+CHUNK 20 (page: 19)
+============================================================
+ 
+2111 sin .cos d sin C44
+          
+ 
+ 11 C4s i n
+  
+ 
+ 20
+    
+214 x C.4x
+  
+
+ 
+(3) 
+22
+1 dx ,
+xx 9   
+ Let x = 3 sec        ,       dx = 3 sec  tan d 
+ 
+22
+3sec tan d
+9sec 9sec 9
+
+   
+ 2
+sec tan d9sec tan
+  
+1 cos d         
+9 
+         
+211 x 9 Cx sin C .99
+  . 
+Example:   Evaluate        2x dx.3x
+
+  
+Solution:   2x 2x 2xdx . dx
+3x 3x 2x
+  
+   
+ 
+2
+2x dx
+6xx
+
+  (using complete square)  
+ 
+24x                   x            
+                                          
+ 
+                       2 
+ 
+               
+ 
+ 
+                  x                   
+2x9      
+                                          
+ 
+                       3 
+
+
+============================================================
+CHUNK 21 (page: 20)
+============================================================
+
+21
+2
+2x dx
+1x6 4
+
+ 
+
+
+21
+2
+2x dx
+25 x4
+
+
+  
+ Let     1
+2ux , d ud x   
+ 1
+2
+22
+5 u2u 2du du
+25 25uu44
+
+
+  
+ = 
+12
+2
+2
+51 2 5 du u. u du24 25 u4
+
+ 
+  
+ 
+12
+2
+1 1
+2 12
+25 u5u 4.sin C 52 2
+
+   
+  
+ 
+121 21 2 12
+5x 2 5sin x C.524 2
+
+      
+  
+Integration by using partial fractions. 
+ To see how the method of part ial fractions works in general, 
+let's consider a rational function   
+
+Pxf here P and Q are 
+polynomials. It's possible to express f as a sum of simpler fractions 
+provided that the degree of p is le ss than the degree of Q. such a 
+x Qx  w
+ 21
+
+============================================================
+CHUNK 22 (page: 21)
+============================================================
+rational function is called prop er. If f is improper, that is 
+, then we must take th e preliminary step of 
+dividing Q into P (by long di vision) until a remainder R(x) is 
+obtained such that deg (R) < deg (Q). 
+  deg P deg Q
+ 
+   
+
+Px Rxfx S x .Qx Qx   
+Example: Evaluate the following Integrals. 
+(1)   
+3xx dxx1
+
+  (2)   
+2
+32
+x2 x 1 dx2x 3x 2x
+
+   
+(3)   
+2
+3
+2x x 4 dxx4 x
+
+  (4)   
+  
+2
+1 dx
+x1x2  
+Solution:                           Prepared by Dr.Hany El Deeb 
+(1)  x2 + x + 2  
+ x – 1  x3 + x  
+  32
+2
+xx Substractxx
+
+
+ 
+  2xx Substract2x
+  
+  2x 2 Substract2
+  
+ 
+3
+2xx 2dx x x 2 dx dxx1 x1
+     
+ 22
+
+============================================================
+CHUNK 23 (page: 22)
+============================================================
+32xx 2x 2.ln x 1 C.32    
+(2) 
+
+22
+32 2
+x2 x 1 x2 x 1
+2x 3x 2x x2 x 3 x 2
+       
+2x2 x 1
+x2 x 1 x 2
+  
+ 
+ AB C
+x2 x 1 x 2   
+                                                   (2) 
+       
+  
+A 2 x 1 x2 B x x2 C x 2 x 1
+x2 x 1 x 2
+     
+ 
+    
+2x 2 x1A 2 x1x 2 B x x 2 C x 2 x1          
+Let 12x, x 2 , x   0 to get the values of A, B, C we get  
+1125A, B, C 1 10  . From (1) we get  
+2
+1
+232
+x2 x 1 1 1 1 1 1dx dx dx dx2x 3x 2x x 5 2x 1 10 x 2
+        
+                                  1
+2
+11ln x ln 2x 1 ln x 2 C10 10      
+(3) 
+
+22
+3 2
+2x x 4 2x x 4
+x4 x xx 4
+   
+ 
+ 2
+AB x C
+xx4
+ 
+                                                              (1) 
+ 
+
+2
+2
+Ax 4 xB x C
+xx 4
+ 
+
+
+  
+ 23
+
+============================================================
+CHUNK 24 (page: 23)
+============================================================
+24
+   
+222x x 4 A x 4 x Bx C      
+ Let x0, 44 A A1     
+Equating the coefficient of x2   
+2A B 21 B B1        
+ Equating the coefficient of x  
+1C . From (1) we get  
+ 
+22x x 4 1
+32
+x 1dx dx dxx x4
+   
+ 
+4
+x x
+2
+32
+2x x 4 1 x 1dx dx dx dxx4 x x x4 x4
+      
+2
+
+ 2111
+22
+xln x ln x 4 tan C. 2
+     
+ 
+(4) 
+     
+22
+1A B C
+x1 x2x1 x2 x2
+    
+              (1) 
+    
+  
+2
+2
+Ax 2 Bx 1 Cx 2 x 1
+x1x2
+    
+
+  
+    
+2
+1A x2 B x1 C x2x1       
+ Let  x2 ,1 B   
+  x1, 1A  Prepared by Dr.Hany El Deeb
+
+============================================================
+CHUNK 25 (page: 24)
+============================================================
+Equating the coefficient of x 2 
+ 25
+ 0A  C C 1   
+ 
+  
+2
+1 dx
+x1x2  
+ 
+2
+11 dx dx dxx1 x2
+1
+2
+     
+x
+1ln x 1 ln x 2 C.x2    
+  
+ 
+eduction formula.R  
+xample:E   Evaluate the integrals. 
+(2)(1)   n3 xx. e d x     nsin xdx  
+(3)    (4) ntan xdx  ncot xdx  
+(5)     (6) nsec xdx   ncos xdx  
+Solution: 
+x
+x
+n3 x
+nIx e d   (1) 
+ ux n3 d ve d x
+
+============================================================
+CHUNK 26 (page: 25)
+============================================================
+3x
+n1 edu nx dx v 3
+   
+n3 x
+n1 3 x
+n
+x. e nIx 33
+    e dx
+ 
+n3 x
+nn
+x. e nII 33
+  
+1
+(2) d x 
+n1
+nIs i n x . s i n x
+
+   
+ 
+n1
+u sin x dv sin xdx
+
+  
+   
+n2
+du n 1 sin x cos xdx v cos x
+
+    
+     
+n1 n2 2
+nI cos x sin x n 1 sin x cos xdx
+
+     
+      
+n1 n2 n
+nI cos x sin x n 1 sin x sin x dx
+         
+     
+n1
+nnIc o s x s i n x n 1 I n 1
+
+      
+2 nI
+     
+n1
+nnIn 1 I c o s x s i n x n 1 I
+n 2
+
+     
+  
+n1
+nn
+1Ic o s x s i n x n 1 In
+
+
+     
+2
+(3) 
+      
+
+n2 2
+nI tan x .tan xdx
+
+   
+  
+n2 2tan x . sec x 1 dx
+
+  
+ 26
+
+============================================================
+CHUNK 27 (page: 26)
+============================================================
+  
+n2 n22tan x .sec xdx ta x dx
+
+  nI n 
+
+n1
+nn
+tan xII n1
+
+ 
+  
+2
+xercise E
+ 27
+: Evaluate the following Integals. 
+(1)   1 23 x d x  (2)   
+x
+ 2
+35 x dx16 x
+
+  
+
+52
+x dx
+13 x
+  (3)   (4)   10sec x.tan xdx  
+(5)   
+1
+2
+sin x dx
+1x
+
+  (6)   2
+4 dxx1 0 x 6 1   
+(7)   
+2
+dx
+76 xx  (8)   
+6
+28 1x. x x
+   d x
+(9)   2
+8t a n x dx1s i n x
+
+  (10)  2
+sin 2x dxsin x  
+(11)   (12) 
+5xxee 3d x  
+21t a n dxtan x
+
+  
+(13)  
+5
+38 1x. x x
+ 
+
+  d x (14)  5tan xdx
+
+============================================================
+CHUNK 28 (page: 27)
+============================================================
+(15)  
+2sec x dxtan x  (16)   sec xdxtan x  
+(17)   (18) 44tan x.sec xdx  43sin x cos xdx  
+(19)  (20)  
+2sin x.sec xdx  tan x dxsec x tan x  
+(21)   (22) 4xxe dx
+  21x .tan xdx
+  
+(23)   (24) cos ln x dx  x sec x tan xdx  
+(25)  1 dx
+2x 3 2x 1   (26)   
+2 72x8 x 1 6 d x  
+(27)  
+2x dx
+2x 1  (28)  
+
+32
+t2 dt
+t4 t 3
+
+  
+(29)  
+8
+8 7x5 x
+   d x (30)  x
+1 dx1e   
+(31)  5xed x  (32)    cos 4 sin 8 d   
+(33)  (34)  
+2x cosec xdx  2
+ln x dxx  
+ 28
+
+============================================================
+CHUNK 29 (page: 28)
+============================================================
+(35)  3sec xdx  (36)  
+5
+2
+x dx
+1x  
+(37)  cos x d x  (38)   
+3xe .sin 3x cos xdx  
+(39)  1c o s x d x  (40)   cos 2ln x dx  
+(41)  2
+dx
+12 5 x  (42)  4
+x dx16 9x  
+(43)  
+2
+sin x dx
+2c o s x  (44)   sin ln x dxx  
+(45)  
+1
+2
+sin tan x
+dxx1
+
+  (46)  x1 x d x  
+(47)  4
+x dx1x  (48)  2x dxx3
+
+  
+(49)  
+2
+dx
+4x 12x 7  (50)  
+2
+4x 5 dx
+3x x
+
+  
+(51)  xx
+dx
+ee   (52)  xx
+dx
+ee   
+(53)  
+4
+dx
+xx 1   (54)  1 dx
+3x 1   
+ 29
+
+============================================================
+CHUNK 30 (page: 29)
+============================================================
+(55)  3
+1 dx
+xx  (56)  x4 dxx
+
+  
+(57)  cot x.ln sin x dx  (58) cos 2x sin 4xdx  
+(59)  
+2ln x 1 dx  (60)  
+
+2
+ln x dx
+xl nx 1 2  
+Revision Problems with solutions 
+Evaluate the following Integrals. 
+[2] 
+3
+dx  
+4
+xx
+ 1x
+
+22
+2
+2
+xs i n x
+sec xdx1x
+
+  [4] sec x tan x tan x sec x dxcos x
+
+  [3] 
+[5]      
+[7] 
+
+1053x1x d x
+
+2
+ln x dx
+x5 l n x      
+ 
+[13] 
+[12] d x      
+2 100
+1x 2x
+                      [14]  
+x1 x
+2x
+et a n e
+dx1e
+
+  
+x
+x2
+2e dxe
+
+
+
+
+xl nx
+x3
+e dx2x                               [15] 
+ 30
+
+============================================================
+CHUNK 31 (page: 30)
+============================================================
+
+x
+3
+2
+log 2
+ 
+xx xx1 2 . 3 . 3 6 d x
+ 31
+[17] dx                     [12
+x 18] 
+22
+  
+[19] 2
+cos x sin xdx    [ 2 0 ]   2s i n2 d x1c
+o s x
+x2 x 
+  
+ [22] 
+
+xx
+1 dx
+515   
+  44log sin x l og cos x dxsin x cos x
+
+  [23] 
+x
+2x
+5 dx
+45
+
+[24]                      [25] 1x dx
+xx
+
+  
+[26] tan x
+cos x 1 sec x dx             
+ [29] 
+2x
+2x x
+e dxee   
+[30] x             [31] cot x.ln sin dx
+5
+3
+x dx
+1x  
+[32] 
+ 
+2
+cos d
+sin 4sin 5 sin 2
+ 
+     
+tionsSolu  
+
+33
+1
+242 2
+xx 2 x xdx dx dx
+4x
+1x1x
+ 
+
+   
+1[2]
+
+============================================================
+CHUNK 32 (page: 31)
+============================================================
+32
+=  
+124
+1211
+24 12
+1x
+sin x C 
+             
+1234x.1 x
+
+   
+[3]   
+22 2 2
+22
+22
+xs i n x x1 1 s i n x
+sec xdx sec xd 1x
+x1x
+  
+   
+ = 
+2
+2
+22 2
+cos x 1 11 . dx sec x dx1x c o s x 1x
+       
+ = 
+[4] 
+
+1tan x tan x C.  
+sec x tan x tan x. sec x dxcos x
+
+  
+ = sec x tan x tan x sec xdx dxcos x cos x   
+ =  
+11 222sec x tan x dx sec x tan x sec x dx  
+ =  
+3322tan x sec x C.3322
+   
+[5]  
+1053x1x d x      Let 3u1x   ,   2du 3x dx   
+ =  
+1033 2 1 0 dux.1 x . xd x 1 u u . 3    
+ = 
+11 12
+10 111
+3
+1u uuu d u 31 1 1 2
+      C
+
+============================================================
+CHUNK 33 (page: 32)
+============================================================
+=  
+11 1233
+1
+3
+1x 1x
+C11 12
+  
+  . 
+ [7] 
+
+2
+ln x dx
+x5 l n x  
+1
+ d x
+ 2212
+ln x25 l n xx
+   
+  
+
+122
+1
+2 12
+5l n x
+C.
+
+  
+[12]    
+2 100
+1x 2x d x
+ 
+  Let 2 + x = u  du = dx  
+   
+22 100 1001u2ud u u1ud u     
+   
+2 100 102 101 100u2 u 1 u d u u 2 u ud    u  
+ 
+103 102 101uu u 2C103 102 101   
+    
+103 101
+1022x 2x2 2x C103 102 101
+   .  
+[13] 
+xx
+xx
+x2 x 2 2
+2e 2e 1dx dx e 2 e dxee . e e
+
+
+
+     
+ 
+x2 x x 2 x 1
+222
+11 2e e dx 2e e C.ee
+         
+[14]  
+x1 x x
+1x
+2x 2x
+et a n e edx tan e dx1e 1e
+
+    
+21xtan e
+C.2
+   
+ 33
+
+============================================================
+CHUNK 34 (page: 33)
+============================================================
+[15] 
+
+xxl nx l nx
+x3 x3
+ee dx dx2x 2x. x
+ 
+xx
+
+x2x 
+31
+23
+dx x dx
+x
+   
+ =
+4
+1
+2
+x C.4
+ 
+ 
+ [17]  
+x
+3 3
+22
+log 2 xl o g 2dx dx12 x 12 x   
+  
+21
+33 42
+xlog 2 dx log 2 .ln 1 2x C.12 x     
+[18] 
+22xx2 xx1 2 . 3 . 6d x    
+22x2 x x 2 xx1 6 . 6d x x1 6 d x     
+ 
+2x2 x1 2x 2 ln6.6 dx2ln6
+ 
+2x2 x1 6C2ln6
+ .   
+[19] 
+
+22
+cos xsin x 1 2cos x sin xdx dx1c o s x 2 1c o s x
+  
+21
+2 ln 1 cos x C.    
+[20]   
+ln 2xx x x 12 .sin 4.2 dx 2 4 sin 4.2 dx4ln2  
+
+x1 cos 4.2 C.4ln2
+    
+ [22] 
+
+x
+xxx
+15 dx dx 15515
+
+  
+xln 1 5 C.ln 5
+1   
+[23] 4
+4
+sin xlog log tan xcos x dx dxsin x cos x sin x cos x
+   
+ 34
+
+============================================================
+CHUNK 35 (page: 34)
+============================================================
+4
+1ln 4 log tan x dxln 4sin x cos x  
+
+2
+4log tan xln 4 C. 2
+                     
+[24]  
+
+xx
+2x 2 2x
+5l n 551 dx dx ln 545 25
+
+ 
+  
+
+x15 1sin C.ln 5 2
+  
+ 
+[25]   1x 1x1x dx dx
+xx x xx
+ 
+  
+ 
+1x
+
+
+
+1x
+xx 1
+
+
+
+12dx x 1 dx
+
+ 
+12 .
+12
+x xC  
+
+ 
+[26] 
+12tan x dx sec x tan x 1 sec x dx
+cos x 1 sec x
+
+
+  
+ 
+12
+12
+1s e c x C.  
+ [29] 
+2x x
+2x x
+ee dxee 
+x
+x
+e
+e 
+x
+dx
+e1 
+xe x
+x dx ln e 1 C.e1    
+[30]  
+2
+ln sin xcot x ln sin x dx C. 2
+  
+[31] 32 3x. x 1 xd x  (Integration by parts) 
+ 
+1232 3ux d vx 1 x d x   
+Prepared by Dr.Hany El Deeb 
+ 
+ 35
+
+============================================================
+CHUNK 36 (page: 35)
+============================================================
+
+3/23
+2 1
+3
+1x
+du 3x dx v 32
+
+  
+ 53x1 x d x   
+3333 23 222x 1 x 6 x 1 x dx     
+    
+53 2333 2 21 x
+2x 1 x C. 52
+
+    
+[32] Let  u sin then du cos d   
+ 
+ 
+2
+cos d
+sin 4sin 5 sin 2
+ 
+    
+ 
+ 
+2
+du
+u4 u 5 u 2
+
+   
+ 
+   
+1 duu5u1 u2    
+ Then use partial fraction. 
+ 
+Prepared by Dr.Hany El Deeb 
+ 
+ 
+ 36
+

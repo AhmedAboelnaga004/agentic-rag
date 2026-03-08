@@ -1,0 +1,23 @@
+# Web framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# LangChain core + integrations
+langchain>=0.3.25
+langchain-core>=0.3.58
+langchain-community>=0.3.23
+langchain-google-genai>=2.1.4
+langchain-pinecone>=0.2.13
+langchain-text-splitters>=0.3.8
+
+# Pinecone client
+pinecone>=6.0.0
+
+# PDF loading
+pypdf>=5.1.0
+
+# File uploads
+python-multipart>=0.0.12
