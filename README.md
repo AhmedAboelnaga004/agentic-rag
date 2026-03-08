@@ -1,187 +1,256 @@
-# Agentic Personal Assistant
+# 🤖 Agentic Personal Assistant
 
-A full-stack agentic RAG (Retrieval-Augmented Generation) application that allows users to upload PDF documents and chat with them using an intelligent AI agent.
+A full-stack AI assistant that lets you **upload PDF documents** (including handwritten and scanned ones) and **chat with them** using natural language. Powered by Google Gemini 2.5 Flash, Pinecone vector search, LangChain, and a React frontend.
 
-## 🚀 Features
+---
 
-- **PDF Document Ingestion**: Upload and process PDF files into a vector database
-- **Agentic Chat**: Intelligent agent that decides when to search the knowledge base
-- **Conversation Memory**: Maintains context across multiple questions
-- **Modern UI**: ChatGPT-like interface with file upload capabilities
-- **Observability**: Integrated with LangSmith for monitoring and tracing
+## ✨ Features
+
+- 📄 **Smart PDF ingestion** — automatically detects whether a PDF has a real text layer or is image/handwriting-based
+- 🧠 **Gemini Vision OCR** — for scanned or handwritten PDFs (e.g. math notes), uses Gemini 2.5 Flash Vision to transcribe each page into clean markdown, including full LaTeX for mathematical expressions
+- 🔍 **Semantic search** — chunks are embedded with Pinecone's `llama-text-embed-v2` and stored in a vector database for similarity search
+- 💬 **Agentic chat** — a ReAct agent autonomously decides when to search the knowledge base to answer your question
+- 🧵 **Per-session memory** — conversation history is maintained per session
+- 🔭 **LangSmith tracing** — every LLM call, tool call, token count, and cost is traced end-to-end
+
+---
 
 ## 🏗️ Architecture
 
-### Backend (Node.js/Express)
-- **Server**: Express.js API server with CORS and file upload support
-- **Agent**: LangChain ReAct agent with OpenAI GPT-4o
-- **Vector Database**: Pinecone for document storage and similarity search
-- **Embeddings**: Pinecone-hosted `llama-text-embed-v2` model
-- **Observability**: LangSmith for tracing and monitoring
+```
+┌─────────────────────────────────────────────────────────┐
+│                React Frontend (Vite)                     │
+│                   localhost:5173                         │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP
+┌──────────────────────▼──────────────────────────────────┐
+│              FastAPI Python Server                       │
+│                  localhost:8000                          │
+│                                                         │
+│   POST /api/ingest            POST /api/chat            │
+│         │                           │                   │
+│    ingest.py                    agent.py                │
+│   ┌──────┴──────────┐      ┌────────┴──────────┐        │
+│   │ Text PDF?        │      │  ReAct Agent Loop  │        │
+│   │  → PyPDFLoader   │      │  Gemini 2.5 Flash  │        │
+│   │ Scanned/Handwrit?│      │        │           │        │
+│   │  → Gemini Vision │      │  search_knowledge  │        │
+│   └─────────────────┘      │  _base (tool)       │        │
+│          │                 └────────┬───────────┘        │
+│          ▼                          ▼                    │
+│     Pinecone Vector DB  ◄───────────┘                   │
+└─────────────────────────────────────────────────────────┘
+```
 
-### Frontend (React/Vite)
-- **UI Framework**: React with Vite for fast development
-- **Styling**: ChatGPT-inspired dark theme interface
-- **File Upload**: Drag-and-drop PDF upload with progress feedback
-- **Chat Interface**: Real-time messaging with typing indicators
+---
 
 ## 📋 Prerequisites
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Pinecone account with index created
-- OpenAI API key
-- LangSmith account (optional, for observability)
+Make sure you have the following installed:
 
-## 🛠️ Setup
+| Tool | Version | Download |
+|------|---------|----------|
+| **Node.js** | v18+ | https://nodejs.org |
+| **Python** | 3.10+ | https://python.org |
+| **npm** | v9+ | Comes with Node.js |
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd agentic-personal-assistant
-   ```
+You also need accounts and API keys for:
 
-2. **Install dependencies**
-   ```bash
-   npm run install:all
-   ```
+| Service | Purpose | Get Key |
+|---------|---------|---------|
+| **Google AI Studio** | Gemini LLM + Vision | https://aistudio.google.com/apikey |
+| **Pinecone** | Vector database | https://app.pinecone.io |
+| **LangSmith** *(optional)* | Tracing & observability | https://smith.langchain.com |
 
-3. **Environment Configuration**
-   ```bash
-   cp .env.example .env
-   ```
+---
 
-   Edit `.env` with your API keys:
-   ```env
-   # LLM
-   OPENAI_API_KEY=your_openai_api_key
-   
-   # Vector DB (Pinecone)
-   PINECONE_API_KEY=your_pinecone_api_key
-   PINECONE_INDEX=your_pinecone_index_name
-   
-   # LangSmith tracing
-   LANGSMITH_TRACING=true
-   LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-   LANGSMITH_API_KEY=langsmith_key
-   LANGSMITH_PROJECT="Project name"
-   ```
+## ⚙️ Setup
 
-## 🚀 Running the Application
+### 1. Clone the repository
 
-### Development Mode
+```bash
+git clone https://github.com/AhmedAboelnaga004/agentic-rag.git
+cd agentic-rag
+```
+
+### 2. Create your Pinecone index
+
+In your [Pinecone console](https://app.pinecone.io):
+1. Create a new **Serverless** index
+2. Set **Dimensions** to `1024` (required by `llama-text-embed-v2`)
+3. Set **Metric** to `cosine`
+4. Note down your index name for the `.env` file
+
+### 3. Configure environment variables
+
+Create a file called `.env` inside the `python-server/` folder:
+
+```bash
+# python-server/.env
+
+# Google Gemini (LLM + Vision)
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Pinecone Vector DB
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_INDEX=your_pinecone_index_name_here
+
+# LangSmith — optional but recommended for observability
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=your_langsmith_api_key_here
+LANGSMITH_PROJECT=agentic-personal-assistant
+```
+
+### 4. Set up the Python virtual environment
+
+```bash
+cd python-server
+python -m venv venv
+```
+
+Activate it:
+
+```bash
+# Windows (PowerShell)
+venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+Install all Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Install Node.js dependencies
+
+Go back to the **project root** and run:
+
+```bash
+cd ..
+npm install
+npm --prefix client install --legacy-peer-deps
+```
+
+---
+
+## 🚀 Running the App
+
+From the **project root**, start both the backend and frontend together:
+
 ```bash
 npm run dev
 ```
-This starts both the server (port 3001) and client (port 5173) concurrently.
 
-### Individual Services
+This launches:
+- 🐍 **Python / FastAPI server** → `http://localhost:8000`
+- ⚛️  **React / Vite client** → `http://localhost:5173`
+
+Open your browser at **http://localhost:5173** and start chatting.
+
+### Run them separately
+
 ```bash
-# Server only
+# Backend only
 npm run dev:server
 
-# Client only  
+# Frontend only
 npm run dev:client
 ```
+
+---
 
 ## 📁 Project Structure
 
 ```
-agentic-personal-assistant/
-├── server/                 # Backend API server
-│   ├── index.js           # Express server and API routes
-│   ├── agent.js           # Agent logic and memory management
-│   ├── tools.js           # Knowledge base search tool
-│   ├── ingest.js          # PDF ingestion pipeline
-│   └── package.json       # Server dependencies
-├── client/                # Frontend React app
+agentic-rag/
+├── package.json                  # Root scripts (dev, install:all)
+│
+├── client/                       # React + Vite frontend
 │   ├── src/
-│   │   ├── App.jsx        # Main application component
-│   │   ├── App.css        # ChatGPT-like styling
-│   │   └── main.jsx       # React entry point
-│   └── package.json       # Client dependencies
-├── .env.example           # Environment variables template
-├── package.json           # Root package with scripts
-└── README.md              # This file
+│   │   ├── App.jsx               # Chat UI + PDF upload
+│   │   ├── App.css               # Styling
+│   │   └── main.jsx              # React entry point
+│   ├── index.html
+│   └── package.json
+│
+└── python-server/                # FastAPI backend
+    ├── main.py                   # API routes — /api/chat and /api/ingest
+    ├── agent.py                  # ReAct agent loop with Gemini + tool calling
+    ├── tools.py                  # search_knowledge_base — Pinecone similarity search
+    ├── ingest.py                 # PDF pipeline — text detection + Gemini Vision OCR
+    ├── requirements.txt          # Python dependencies
+    └── .env                      # Your API keys (never commit this!)
 ```
+
+---
 
 ## 🔄 How It Works
 
-### Document Ingestion
-1. User uploads PDF via frontend
-2. Server receives file and extracts text using PDFLoader
-3. Text is split into chunks (1000 chars with 200 overlap)
-4. Chunks are converted to embeddings using Pinecone's model
-5. Embeddings are stored in Pinecone vector database
+### Uploading a PDF
 
-### Chat Flow
-1. User sends a message
-2. Agent receives message with conversation history
-3. Agent decides whether to search the knowledge base
-4. If needed, searches Pinecone for relevant document chunks
-5. Agent uses retrieved context to generate response
-6. Response is sent back to user and added to conversation history
+1. You pick a PDF file in the UI and click upload
+2. `ingest.py` opens it with **PyMuPDF** and measures the average characters per page
+3. **Text-based PDF** → content is extracted directly with `PyPDFLoader`
+4. **Scanned or handwritten PDF** → each page is rendered to a PNG image and sent to **Gemini 2.5 Flash Vision**, which transcribes it to clean markdown (LaTeX is preserved for math)
+5. Text is split into 1 000-character chunks with 200-character overlap
+6. Chunks are embedded with `llama-text-embed-v2` and uploaded to **Pinecone**
 
-## 🔧 Key Components
+### Chatting
 
-### Agent (`server/agent.js`)
-- ReAct agent using LangChain's `createAgent`
-- MemorySaver for conversation persistence
-- Tool calling for knowledge base search
+1. You type a message in the UI
+2. The **ReAct agent** receives it along with the full session history
+3. The agent calls `search_knowledge_base` when it needs information from the uploaded PDF
+4. The tool runs a semantic similarity search on Pinecone and returns the top 10 most relevant chunks
+5. Gemini reads the retrieved context and writes the final answer
+6. The answer is sent back to the UI and saved to memory for future turns
 
-### Search Tool (`server/tools.js`)
-- Pinecone vector store integration
-- Similarity search with top-k results
-- Lazy initialization for environment variables
+---
 
-### Ingestion Pipeline (`server/ingest.js`)
-- PDF text extraction and chunking
-- Batch processing (96 chunks per API call)
-- Pinecone upsert operations
+## 🔭 Observability with LangSmith
 
-### Frontend (`client/src/App.jsx`)
-- React state management for chat and upload
-- File upload with progress feedback
-- Real-time chat interface with auto-scroll
+When `LANGSMITH_TRACING=true` is set, every run is fully visible at https://smith.langchain.com:
+
+| What is traced | What you see |
+|---|---|
+| Agent chat runs | Full message list, tool calls, final answer |
+| `search_knowledge_base` tool | Query sent, chunks retrieved |
+| Gemini Vision transcription | Per-page: input image → output text, **token count, cost, latency** |
+| Pinecone retrieval | Query, similarity scores, results |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, Vite 7, react-markdown |
+| Backend | FastAPI, Uvicorn, Python 3.10+ |
+| LLM | Google Gemini 2.5 Flash |
+| Vision / OCR | Google Gemini 2.5 Flash (multimodal) |
+| Embeddings | Pinecone `llama-text-embed-v2` (1024-dim) |
+| Vector DB | Pinecone Serverless |
+| AI Framework | LangChain, LangChain-Google-GenAI |
+| Observability | LangSmith |
+| PDF parsing | PyMuPDF (`fitz`), pypdf |
+
+---
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+| Problem | Fix |
+|---------|-----|
+| `Import "fastapi" could not be resolved` in VS Code | Select the venv interpreter: **Ctrl+Shift+P** → *Python: Select Interpreter* → choose `python-server/venv/Scripts/python.exe` |
+| `exited with code 1` after stopping the server | Normal — this just means you pressed Ctrl+C to stop it |
+| Empty `extracted_text.txt` after upload | Your PDF is likely scanned/image-based. Check the server console — it should say `⚠ Image-based PDF detected` and start Gemini Vision transcription |
+| Pinecone dimension mismatch error | Make sure your Pinecone index is created with **1024 dimensions** (required by `llama-text-embed-v2`) |
+| `GOOGLE_API_KEY` not found | Make sure your `.env` file is inside `python-server/`, not the project root |
 
-1. **Connection Refused Error**
-   - Ensure server is running on port 3001
-   - Check for port conflicts: `lsof -i :3001`
-
-2. **Environment Variables Missing**
-   - Verify `.env` file exists in server directory
-   - Check all required API keys are set
-
-3. **Pinecone API Errors**
-   - Verify Pinecone index exists
-   - Check API key permissions
-   - Ensure embedding model matches ingestion/retrieval
-
-4. **Dependency Installation Errors**
-   - Use `--legacy-peer-deps` flag for peer dependency conflicts
-   - Clear node_modules and reinstall if needed
-
-## 📚 Technologies Used
-
-- **Backend**: Node.js, Express.js, Multer
-- **Frontend**: React, Vite
-- **AI/ML**: LangChain, OpenAI GPT-4o
-- **Vector DB**: Pinecone
-- **Observability**: LangSmith
-- **Development**: Concurrently, ESLint
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT

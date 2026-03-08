@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently -n python-server,client -c magenta,cyan \"cd python-server && python main.py\" \"npm --prefix client run dev\"",
-    "dev:server": "cd python-server && python main.py",
+    "dev": "concurrently -n python-server,client -c magenta,cyan \"cd python-server && venv\\\\Scripts\\\\python.exe main.py\" \"npm --prefix client run dev\"",
+    "dev:server": "cd python-server && venv\\Scripts\\python.exe main.py",
     "dev:client": "npm --prefix client run dev",
     "install:all": "npm install && npm --prefix client install --legacy-peer-deps && pip install -r python-server/requirements.txt"
   },
