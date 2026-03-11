@@ -1,52 +1,62 @@
-# 🤖 Agentic Personal Assistant
+﻿# Agentic Study Assistant
 
-A full-stack AI assistant that lets you **upload PDF documents** (including handwritten and scanned ones) and **chat with them** using natural language. Powered by Google Gemini 2.5 Flash, Pinecone vector search, LangChain, and a React frontend.
+A full-stack AI assistant for university students. Upload your course PDFs and chat with them using natural language. Built with Google Gemini 2.5 Flash, Pinecone vector search, LangChain, and a React frontend.
 
----
-
-## ✨ Features
-
-- 📄 **Smart PDF ingestion** — automatically detects whether a PDF has a real text layer or is image/handwriting-based
-- 🧠 **Gemini Vision OCR** — for scanned or handwritten PDFs (e.g. math notes), uses Gemini 2.5 Flash Vision to transcribe each page into clean markdown, including full LaTeX for mathematical expressions
-- 🔍 **Semantic search** — chunks are embedded with Pinecone's `llama-text-embed-v2` and stored in a vector database for similarity search
-- 💬 **Agentic chat** — a ReAct agent autonomously decides when to search the knowledge base to answer your question
-- 🧵 **Per-session memory** — conversation history is maintained per session
-- 🔭 **LangSmith tracing** — every LLM call, tool call, token count, and cost is traced end-to-end
+Supports **multi-tenant, multi-course** architecture -- each university gets its own Pinecone namespace, each course is isolated by metadata filters, and the agent is locked to the active course so it can never bleed context across subjects.
 
 ---
 
-## 🏗️ Architecture
+## Features
+
+- **Multi-tenant by design** -- namespace per university, course-locked sessions, agent physically cannot return data from other courses
+- **Two ingestion pipelines** -- choose per upload:
+  - **Gemini Vision** (Recommended for math/handwriting) -- renders each page to PNG, sends to Gemini 2.5 Flash Vision; full LaTeX math preserved
+  - **LlamaParse** (Fast) -- uploads PDF to LlamaParse cloud API, returns markdown; no per-page throttle; best for clean printed documents
+- **Structure-aware chunking** -- two-stage split: first on `#`/`##`/`###` Markdown headers, then `RecursiveCharacterTextSplitter` only on chunks that exceed the size limit
+- **Rich 13-field metadata** per chunk -- `university_id`, `faculty_id`, `semester`, `course_id`, `course_code`, `course_name`, `document_id`, `doc_title`, `doc_type`, `page`, `section_heading`, `content_type`, `has_formula`
+- **Two search tools** -- plain semantic search and filtered search (by section heading, content type, formula presence)
+- **Agentic ReAct loop** -- Gemini decides when to search, which tool to use, and how many times
+- **Per-session memory** -- conversation history maintained per session ID
+- **KaTeX math rendering** -- AI responses render `\$...\$` and `\$\$...\$\$` LaTeX correctly in the browser
+- **LangSmith tracing** -- every LLM call, tool call, token count, and cost traced end-to-end
+
+---
+
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                React Frontend (Vite)                     │
-│                   localhost:5173                         │
-└──────────────────────┬──────────────────────────────────┘
-                       │ HTTP
-┌──────────────────────▼──────────────────────────────────┐
-│              FastAPI Python Server                       │
-│                  localhost:8000                          │
-│                                                         │
-│   POST /api/ingest            POST /api/chat            │
-│         │                           │                   │
-│    ingest.py                    agent.py                │
-│   ┌──────┴──────────┐      ┌────────┴──────────┐        │
-│   │ Text PDF?        │      │  ReAct Agent Loop  │        │
-│   │  → PyPDFLoader   │      │  Gemini 2.5 Flash  │        │
-│   │ Scanned/Handwrit?│      │        │           │        │
-│   │  → Gemini Vision │      │  search_knowledge  │        │
-│   └─────────────────┘      │  _base (tool)       │        │
-│          │                 └────────┬───────────┘        │
-│          ▼                          ▼                    │
-│     Pinecone Vector DB  ◄───────────┘                   │
-└─────────────────────────────────────────────────────────┘
++------------------------------------------------------------+
+|                   React Frontend (Vite)                    |
+|   Course context setup -> locked session -> chat + upload  |
+|                       localhost:5173                       |
++---------------------------+--------------------------------+
+                            | HTTP
++---------------------------v--------------------------------+
+|               FastAPI Python Server  :8000                 |
+|                                                            |
+|   POST /api/ingest               POST /api/chat            |
+|   technique=gemini|llamaparse    university_id             |
+|          |                       course_id                 |
+|     +----+------+                course_name               |
+|     |           |                     |                    |
+|  ingest.py  ingest_              agent.py                  |
+|  (Gemini    llamaparse.py        ReAct loop                 |
+|   Vision)   (LlamaParse)         Gemini 2.5 Flash           |
+|     |           |                     |                    |
+|     +----+------+             tools.py (search)            |
+|          |                           |                     |
+|   Two-stage chunker                  |                     |
+|   13-field metadata                  |                     |
+|          |                           |                     |
+|          v                           v                     |
+|      Pinecone <------- namespace: uni_{university_id}      |
+|   llama-text-embed-v2    filter: course_id == X            |
++------------------------------------------------------------+
 ```
 
 ---
 
-## 📋 Prerequisites
-
-Make sure you have the following installed:
+## Prerequisites
 
 | Tool | Version | Download |
 |------|---------|----------|
@@ -54,52 +64,108 @@ Make sure you have the following installed:
 | **Python** | 3.10+ | https://python.org |
 | **npm** | v9+ | Comes with Node.js |
 
-You also need accounts and API keys for:
+---
 
-| Service | Purpose | Get Key |
-|---------|---------|---------|
-| **Google AI Studio** | Gemini LLM + Vision | https://aistudio.google.com/apikey |
-| **Pinecone** | Vector database | https://app.pinecone.io |
-| **LangSmith** *(optional)* | Tracing & observability | https://smith.langchain.com |
+## API Keys You Need
+
+You need accounts and API keys for **4 services**.
+
+### 1. Google AI Studio -- `GOOGLE_API_KEY`
+
+**What it does:** Powers the AI brain. The ReAct agent uses Gemini 2.5 Flash for reasoning and answering questions. If you choose the **Gemini Vision** ingestion pipeline, it also transcribes PDF pages to markdown by looking at rendered images of each page, preserving full LaTeX math.
+
+**Free tier:** 15 requests/minute, 1 million tokens/day.
+
+**Where to get it:** https://aistudio.google.com/apikey
 
 ---
 
-## ⚙️ Setup
+### 2. Pinecone -- `PINECONE_API_KEY` + `PINECONE_INDEX`
+
+**What it does:** The vector database where your document chunks are stored after ingestion. Every time you ask a question, the agent searches Pinecone to find the most semantically relevant passages. Searches are always filtered by `course_id` so students can only retrieve their own course material.
+
+**Setup steps:**
+1. Create a free account at https://app.pinecone.io
+2. Create a new **Serverless** index:
+   - **Dimensions:** `1024` (required by `llama-text-embed-v2`)
+   - **Metric:** `cosine`
+3. Copy your **API key** and **index name**
+
+**Free tier:** 100k vectors, 2 GB storage.
+
+---
+
+### 3. LlamaCloud -- `LLAMA_CLOUD_API_KEY`
+
+**What it does:** Powers the **LlamaParse** ingestion option (the fast option in the upload form). Your PDF is uploaded to LlamaParse's cloud which converts it to structured markdown. No GPU needed locally. The SDK handles job submission and polling automatically.
+
+**Free tier:** 10,000 credits/month. The app uses `cost_effective` tier (3 credits/page) -> ~3,333 pages/month free.
+
+**Where to get it:** https://cloud.llamaindex.ai -> sign in -> API Keys
+
+> **Optional:** If you only want to use Gemini Vision, you can leave this blank. The upload form lets you switch between pipelines per upload.
+
+---
+
+### 4. LangSmith -- `LANGSMITH_API_KEY` *(optional)*
+
+**What it does:** Observability dashboard. Every LLM call, tool call, token count, latency, and cost is recorded automatically. Useful for debugging what the agent is doing internally.
+
+**Where to get it:** https://smith.langchain.com -> Settings -> API Keys
+
+**To disable:** Set `LANGSMITH_TRACING=false` in your `.env`.
+
+---
+
+## Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/AhmedAboelnaga004/agentic-rag.git
-cd agentic-rag
+git clone https://github.com/tariqlabs/agentic-personal-assistant.git
+cd agentic-personal-assistant
 ```
 
 ### 2. Create your Pinecone index
 
 In your [Pinecone console](https://app.pinecone.io):
 1. Create a new **Serverless** index
-2. Set **Dimensions** to `1024` (required by `llama-text-embed-v2`)
+2. Set **Dimensions** to `1024`
 3. Set **Metric** to `cosine`
-4. Note down your index name for the `.env` file
+4. Note down the index name
 
 ### 3. Configure environment variables
 
-Create a file called `.env` inside the `python-server/` folder:
+Copy the example file and fill in your keys:
 
 ```bash
+cp python-server/.env.example python-server/.env
+```
+
+```env
 # python-server/.env
 
-# Google Gemini (LLM + Vision)
+# Google Gemini (LLM + Vision ingestion)
+# Get from: https://aistudio.google.com/apikey
 GOOGLE_API_KEY=your_google_api_key_here
 
-# Pinecone Vector DB
+# Pinecone (vector database)
+# Get from: https://app.pinecone.io -> API Keys
 PINECONE_API_KEY=your_pinecone_api_key_here
+# The name you gave your index (must be 1024-dim cosine serverless)
 PINECONE_INDEX=your_pinecone_index_name_here
 
-# LangSmith — optional but recommended for observability
+# LlamaParse (fast PDF ingestion pipeline)
+# Get from: https://cloud.llamaindex.ai -> API Keys
+# Optional -- only needed if you use the LlamaParse option in the upload form
+LLAMA_CLOUD_API_KEY=your_llama_cloud_api_key_here
+
+# LangSmith (optional -- tracing & observability)
+# Get from: https://smith.langchain.com -> Settings -> API Keys
 LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=your_langsmith_api_key_here
-LANGSMITH_PROJECT=agentic-personal-assistant
+LANGSMITH_PROJECT=agentic-rag
 ```
 
 ### 4. Set up the Python virtual environment
@@ -127,31 +193,30 @@ pip install -r requirements.txt
 
 ### 5. Install Node.js dependencies
 
-Go back to the **project root** and run:
+From the **project root**:
 
 ```bash
-cd ..
 npm install
-npm --prefix client install --legacy-peer-deps
+npm --prefix client install
 ```
 
 ---
 
-## 🚀 Running the App
+## Running the App
 
-From the **project root**, start both the backend and frontend together:
+From the **project root**:
 
 ```bash
 npm run dev
 ```
 
 This launches:
-- 🐍 **Python / FastAPI server** → `http://localhost:8000`
-- ⚛️  **React / Vite client** → `http://localhost:5173`
+- **FastAPI backend** -> `http://localhost:8000`
+- **React/Vite frontend** -> `http://localhost:5173`
 
-Open your browser at **http://localhost:5173** and start chatting.
+Open **http://localhost:5173** in your browser.
 
-### Run them separately
+### Run separately
 
 ```bash
 # Backend only
@@ -163,94 +228,130 @@ npm run dev:client
 
 ---
 
-## 📁 Project Structure
+## Using the App
+
+### 1. Set up your course context
+
+When you open the app you will see a **Course Context** form. Fill in:
+
+| Field | Example | Purpose |
+|-------|---------|---------|
+| University ID | `CAIRO_UNI` | Determines Pinecone namespace (`uni_CAIRO_UNI`) |
+| Faculty ID | `ENGINEERING` | Stored as metadata on every chunk |
+| Semester | `2025-SPRING` | Stored as metadata |
+| Course ID | `MATH101` | Filters search -- you only ever see chunks from this course |
+| Course Code | `MATH101` | Display label |
+| Course Name | `Calculus 1` | Shown in UI and passed to the agent |
+
+Click **Start Session**. The session is locked to this course until you click **Change course**.
+
+### 2. Upload a PDF
+
+In the upload panel:
+1. Choose your PDF file
+2. Enter a document title
+3. Select a document type (Lecture, Textbook, Assignment, etc.)
+4. Choose your ingestion technique:
+   - **LlamaParse** -- uploads to cloud, returns markdown; faster, good for clean printed PDFs
+   - **Gemini Vision** -- renders every page as an image and sends to Gemini; best for scanned notes and heavy math; slower (15s/page on free tier)
+5. Click **Upload**
+
+A debug file is saved to `python-server/` (`extracted_text_llamaparse.txt` or `extracted_text.txt`) so you can inspect exactly what the AI extracted.
+
+### 3. Chat
+
+Type a question and press Enter. The agent searches the uploaded documents and answers using retrieved context. Math formulas are rendered with KaTeX.
+
+---
+
+## Project Structure
 
 ```
-agentic-rag/
-├── package.json                  # Root scripts (dev, install:all)
-│
-├── client/                       # React + Vite frontend
-│   ├── src/
-│   │   ├── App.jsx               # Chat UI + PDF upload
-│   │   ├── App.css               # Styling
-│   │   └── main.jsx              # React entry point
-│   ├── index.html
-│   └── package.json
-│
-└── python-server/                # FastAPI backend
-    ├── main.py                   # API routes — /api/chat and /api/ingest
-    ├── agent.py                  # ReAct agent loop with Gemini + tool calling
-    ├── tools.py                  # search_knowledge_base — Pinecone similarity search
-    ├── ingest.py                 # PDF pipeline — text detection + Gemini Vision OCR
-    ├── requirements.txt          # Python dependencies
-    └── .env                      # Your API keys (never commit this!)
+agentic-personal-assistant/
++-- package.json                   # Root scripts (dev, install:all)
+|
++-- client/                        # React + Vite frontend
+|   +-- src/
+|   |   +-- App.jsx                # Course context, upload form, chat UI, KaTeX rendering
+|   |   +-- App.css                # Styling
+|   |   +-- main.jsx               # React entry point
+|   +-- package.json
+|
++-- python-server/                 # FastAPI backend
+    +-- main.py                    # Routes: /api/chat and /api/ingest (technique routing)
+    +-- agent.py                   # ReAct agent -- Gemini 2.5 Flash + tools + session memory
+    +-- tools.py                   # search_course + search_course_filtered, namespace-aware
+    +-- ingest.py                  # Gemini Vision pipeline: PDF -> PNG -> Gemini -> Pinecone
+    +-- ingest_llamaparse.py       # LlamaParse pipeline: PDF -> cloud parse -> Pinecone
+    +-- requirements.txt           # Python dependencies
+    +-- .env                       # Your API keys -- NEVER commit this!
+    +-- .env.example               # Template -- copy to .env and fill in your keys
 ```
 
 ---
 
-## 🔄 How It Works
+## How It Works
 
-### Uploading a PDF
+### Ingestion -- Gemini Vision (`ingest.py`)
 
-1. You pick a PDF file in the UI and click upload
-2. `ingest.py` opens it with **PyMuPDF** and measures the average characters per page
-3. **Text-based PDF** → content is extracted directly with `PyPDFLoader`
-4. **Scanned or handwritten PDF** → each page is rendered to a PNG image and sent to **Gemini 2.5 Flash Vision**, which transcribes it to clean markdown (LaTeX is preserved for math)
-5. Text is split into 1 000-character chunks with 200-character overlap
-6. Chunks are embedded with `llama-text-embed-v2` and uploaded to **Pinecone**
+1. Each page is rendered to PNG at 175 DPI with **PyMuPDF**
+2. The image is sent to **Gemini 2.5 Flash Vision** with a transcription prompt that enforces LaTeX math (`\$...\$` / `\$\$...\$\$`)
+3. A 15-second throttle between pages prevents hitting the 4 RPM free-tier limit; `tenacity` retries on 429s
+4. Transcribed markdown -> two-stage chunker -> 13-field metadata -> Pinecone
 
-### Chatting
+### Ingestion -- LlamaParse (`ingest_llamaparse.py`)
 
-1. You type a message in the UI
-2. The **ReAct agent** receives it along with the full session history
-3. The agent calls `search_knowledge_base` when it needs information from the uploaded PDF
-4. The tool runs a semantic similarity search on Pinecone and returns the top 10 most relevant chunks
-5. Gemini reads the retrieved context and writes the final answer
-6. The answer is sent back to the UI and saved to memory for future turns
+1. PDF is uploaded to LlamaParse cloud via `AsyncLlamaCloud` (`cost_effective` tier)
+2. `parse()` handles job submission and polling automatically
+3. Per-page markdown returned as `result.markdown.pages[i].markdown`
+4. Same two-stage chunker, metadata injection, and Pinecone upsert (with retry + 12s throttle between batches) as the Gemini pipeline
 
----
+### Two-stage chunking
 
-## 🔭 Observability with LangSmith
+- **Stage 1:** `MarkdownHeaderTextSplitter` splits on `#`/`##`/`###` -- keeps each chunk within one section
+- **Stage 2:** `RecursiveCharacterTextSplitter` (1500 chars, 300 overlap) only runs on chunks still above the size limit
 
-When `LANGSMITH_TRACING=true` is set, every run is fully visible at https://smith.langchain.com:
+### Chat
 
-| What is traced | What you see |
-|---|---|
-| Agent chat runs | Full message list, tool calls, final answer |
-| `search_knowledge_base` tool | Query sent, chunks retrieved |
-| Gemini Vision transcription | Per-page: input image → output text, **token count, cost, latency** |
-| Pinecone retrieval | Query, similarity scores, results |
+1. Frontend sends `message + university_id + course_id + course_name`
+2. `agent.py` builds a dynamic system prompt locking the agent to the active course
+3. Tools use `functools.partial` to pre-fill `university_id` and `course_id` -- the LLM never sees these fields and cannot hallucinate them
+4. Pinecone search **always** applies `course_id == X` -- physically impossible to retrieve chunks from another course
+5. Answer saved to in-memory session history for multi-turn conversation
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React 19, Vite 7, react-markdown |
+| Frontend | React 19, Vite 7, `react-markdown`, `remark-math`, `rehype-katex` |
 | Backend | FastAPI, Uvicorn, Python 3.10+ |
-| LLM | Google Gemini 2.5 Flash |
-| Vision / OCR | Google Gemini 2.5 Flash (multimodal) |
+| LLM & Vision | Google Gemini 2.5 Flash (`langchain-google-genai`) |
+| PDF ingestion A | PyMuPDF + Gemini 2.5 Flash Vision |
+| PDF ingestion B | LlamaParse (`llama-cloud>=1.0`, `cost_effective` tier) |
 | Embeddings | Pinecone `llama-text-embed-v2` (1024-dim) |
-| Vector DB | Pinecone Serverless |
-| AI Framework | LangChain, LangChain-Google-GenAI |
+| Vector DB | Pinecone Serverless (`langchain-pinecone`) |
+| AI Framework | LangChain, LangChain-Core |
+| Retry logic | `tenacity` |
 | Observability | LangSmith |
-| PDF parsing | PyMuPDF (`fitz`), pypdf |
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 | Problem | Fix |
 |---------|-----|
-| `Import "fastapi" could not be resolved` in VS Code | Select the venv interpreter: **Ctrl+Shift+P** → *Python: Select Interpreter* → choose `python-server/venv/Scripts/python.exe` |
-| `exited with code 1` after stopping the server | Normal — this just means you pressed Ctrl+C to stop it |
-| Empty `extracted_text.txt` after upload | Your PDF is likely scanned/image-based. Check the server console — it should say `⚠ Image-based PDF detected` and start Gemini Vision transcription |
-| Pinecone dimension mismatch error | Make sure your Pinecone index is created with **1024 dimensions** (required by `llama-text-embed-v2`) |
-| `GOOGLE_API_KEY` not found | Make sure your `.env` file is inside `python-server/`, not the project root |
+| `Import "fastapi" could not be resolved` in VS Code | **Ctrl+Shift+P** -> *Python: Select Interpreter* -> pick `python-server/venv/Scripts/python.exe` |
+| `GOOGLE_API_KEY not found` | Make sure `.env` is inside `python-server/`, not the project root |
+| Pinecone dimension mismatch | Index must be created with **1024 dimensions** and `cosine` metric |
+| LlamaParse `401 Unauthorized` | Check `LLAMA_CLOUD_API_KEY` is set correctly in `python-server/.env` |
+| Upload slow with Gemini Vision | Expected -- 15s throttle per page on free tier. 10 pages = ~2.5 min. Use LlamaParse for speed. |
+| Math shows as raw text | KaTeX rendering issue. Check the browser console for KaTeX errors. |
+| `exited with code 1` after stopping | Normal -- happens when you press Ctrl+C |
 
 ---
 
-## 📄 License
+## License
 
 MIT
