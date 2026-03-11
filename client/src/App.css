@@ -325,3 +325,42 @@
   outline: none;
   cursor: pointer;
 }
+
+/* ── Ingestion technique toggle ────────────────────────────────────────────── */
+.techniqueToggle {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.techniqueOption {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.techniqueOption input[type="radio"] {
+  display: none;
+}
+
+.techniqueOption:hover {
+  border-color: rgba(16, 163, 127, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(16, 163, 127, 0.08);
+}
+
+.techniqueOption.active {
+  border-color: rgba(16, 163, 127, 0.7);
+  background: rgba(16, 163, 127, 0.15);
+  color: #10a37f;
+  font-weight: 600;
+}

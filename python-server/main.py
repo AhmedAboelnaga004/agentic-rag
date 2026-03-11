@@ -19,6 +19,7 @@ from pydantic import BaseModel
 
 from agent import run_agent
 from ingest import ingest_data
+from ingest_llamaparse import ingest_data_llamaparse
 
 app = FastAPI(title="Personal Assistant")
 
@@ -83,6 +84,7 @@ async def ingest(
     course_name: str = Form(...),
     doc_title: str = Form(...),
     doc_type: str = Form(...),
+    technique: str = Form("gemini"),  # "gemini" | "llamaparse"
 ):
     # Validate PDF
     is_pdf = (
@@ -98,7 +100,8 @@ async def ingest(
     try:
         shutil.copyfileobj(file.file, tmp)
         tmp.close()
-        await ingest_data(
+        ingest_fn = ingest_data_llamaparse if technique == "llamaparse" else ingest_data
+        await ingest_fn(
             tmp.name,
             university_id=university_id,
             faculty_id=faculty_id,

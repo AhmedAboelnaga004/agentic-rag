@@ -25,3 +25,6 @@ python-multipart>=0.0.12
 
 # Retry / rate-limit handling
 tenacity>=8.2.0
+
+# LlamaParse (alternative ingestion pipeline)
+llama-cloud>=1.0

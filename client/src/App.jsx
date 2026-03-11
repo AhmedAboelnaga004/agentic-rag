@@ -81,6 +81,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [docTitle, setDocTitle] = useState("");
   const [docType, setDocType] = useState(DOC_TYPES[0]);
+  const [ingestTechnique, setIngestTechnique] = useState("llamaparse");
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
 
@@ -166,6 +167,7 @@ function App() {
       formData.append("course_name", activeCourse.course_name);
       formData.append("doc_title", docTitle.trim());
       formData.append("doc_type", docType);
+      formData.append("technique", ingestTechnique);
 
       const response = await fetch("http://localhost:8000/api/ingest", {
         method: "POST",
@@ -287,6 +289,28 @@ function App() {
                 <option key={t} value={t}>{t}</option>
               ))}
             </select>
+            <div className="techniqueToggle">
+              <label className={`techniqueOption${ingestTechnique === "llamaparse" ? " active" : ""}`}>
+                <input
+                  type="radio"
+                  name="technique"
+                  value="llamaparse"
+                  checked={ingestTechnique === "llamaparse"}
+                  onChange={() => setIngestTechnique("llamaparse")}
+                />
+                ⚡ LlamaParse
+              </label>
+              <label className={`techniqueOption${ingestTechnique === "gemini" ? " active" : ""}`}>
+                <input
+                  type="radio"
+                  name="technique"
+                  value="gemini"
+                  checked={ingestTechnique === "gemini"}
+                  onChange={() => setIngestTechnique("gemini")}
+                />
+                🔬 Gemini Vision
+              </label>
+            </div>
             <button
               className="primaryButton"
               onClick={uploadDocument}
