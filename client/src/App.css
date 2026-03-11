@@ -218,3 +218,110 @@
   color: rgba(255, 255, 255, 0.55);
   padding: 0 4px;
 }
+
+/* ── Course context setup screen ────────────────────────────────────────── */
+
+.contextPanel {
+  background: #0f1620;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 28px 24px;
+  max-width: 620px;
+  margin: 32px auto 0;
+  width: 100%;
+}
+
+.contextTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.contextGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.contextGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contextGrid input {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  outline: none;
+}
+
+.contextGrid input:focus {
+  border-color: rgba(16, 163, 127, 0.6);
+}
+
+/* ── Course tag in header ────────────────────────────────────────────────── */
+
+.courseTag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(16, 163, 127, 0.18);
+  border: 1px solid rgba(16, 163, 127, 0.35);
+  font-size: 11px;
+  font-weight: 500;
+  color: #10a37f;
+  vertical-align: middle;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: rgba(16, 163, 127, 0.85);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.linkButton:hover {
+  color: #10a37f;
+}
+
+/* ── Upload row extra fields ─────────────────────────────────────────────── */
+
+.docTitleInput {
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  outline: none;
+  min-width: 160px;
+}
+
+.docTitleInput:focus {
+  border-color: rgba(16, 163, 127, 0.6);
+}
+
+.docTypeSelect {
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}

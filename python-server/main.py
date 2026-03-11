@@ -13,7 +13,7 @@ if sys.stderr.encoding != "utf-8":
 from dotenv import load_dotenv
 load_dotenv()
 
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -37,6 +37,11 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
     sessionId: str = "default"
+    # Course context — sent by the frontend on every message.
+    # The agent uses these to lock search to the student's course and namespace.
+    university_id: str
+    course_id: str
+    course_name: str
 
 
 class ChatResponse(BaseModel):
@@ -51,7 +56,13 @@ async def chat(req: ChatRequest):
         raise HTTPException(status_code=400, detail="Message required")
 
     try:
-        output = await run_agent(message=req.message, session_id=req.sessionId)
+        output = await run_agent(
+            message=req.message,
+            session_id=req.sessionId,
+            university_id=req.university_id,
+            course_id=req.course_id,
+            course_name=req.course_name,
+        )
         if not output or not output.strip():
             return ChatResponse(
                 answer="I apologize, but I couldn't generate a proper response. Could you please rephrase your question?"
@@ -62,7 +73,17 @@ async def chat(req: ChatRequest):
 
 
 @app.post("/api/ingest")
-async def ingest(file: UploadFile = File(...)):
+async def ingest(
+    file: UploadFile = File(...),
+    university_id: str = Form(...),
+    faculty_id: str = Form(...),
+    semester: str = Form(...),
+    course_id: str = Form(...),
+    course_code: str = Form(...),
+    course_name: str = Form(...),
+    doc_title: str = Form(...),
+    doc_type: str = Form(...),
+):
     # Validate PDF
     is_pdf = (
         file.content_type == "application/pdf"
@@ -77,7 +98,17 @@ async def ingest(file: UploadFile = File(...)):
     try:
         shutil.copyfileobj(file.file, tmp)
         tmp.close()
-        await ingest_data(tmp.name)
+        await ingest_data(
+            tmp.name,
+            university_id=university_id,
+            faculty_id=faculty_id,
+            semester=semester,
+            course_id=course_id,
+            course_code=course_code,
+            course_name=course_name,
+            doc_title=doc_title,
+            doc_type=doc_type,
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:

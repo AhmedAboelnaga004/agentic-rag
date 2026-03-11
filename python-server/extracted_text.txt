@@ -2,126 +2,104 @@ NOTE: Math is in LaTeX format — this is correct and readable by the AI.
       $ = math delimiter  |  \frac = fraction  |  \sqrt = square root  etc.
 
 ============================================================
-CHUNK 1 (page: 0, method: gemini-vision)
+CHUNK 1  |  page: 0  |  type: formula  |  formula: True  |  section: (none)
 ============================================================
-Lecture ③ : $\boxed{\text{Sin}^{-1}x}$
+Lecture 3
+$\boxed{\text{Sin}^{-1}x}$  
+$\text{Sin}^{-1}x \neq \frac{1}{\text{Sinx}} = (\text{Sinx})^{-1}$  
 $\text{Sin}\frac{\pi}{2} = 1$
 $\downarrow$
-$\text{Sin}^{-1}(1) = \frac{\pi}{2}$
-
-$\text{Sin}^{-1}x \neq \frac{1}{\text{Sinx}} = (\text{Sinx})^{-1}$
-find y'
-① $y = \text{Sin}^{-1}(3x)$
-$y' = \frac{1}{\sqrt{1 - (3x)^2}} \cdot (3).$
-
-② $y = e^{\text{Cos}^{-1}(4x)} \cdot \text{ln}(\text{tanh}^{-1}x^2).$
-$y' = e^{\text{Cos}^{-1}(4x)} \cdot \frac{1}{\text{tanh}^{-1}x^2} \cdot \frac{1}{1 - (x^2)^2} \cdot 2x + \text{ln}(\text{tanh}^{-1}x^2) \cdot e^{\text{Cos}^{-1}(4x)} \cdot \frac{-1}{\sqrt{1 - (4x)^2}} \cdot 4$
-
-Chain rule قاعدة تسلسل
-التفاضل البارامتري
+$\text{Sin}^{-1}(1) = \frac{\pi}{2}$  
+find $y'$  
+1. $y = \text{Sin}^{-1}(3x)$
+$y' = \frac{1}{\sqrt{1-(3x)^2}} \cdot (3)$  
+2. $y = e^{\text{Cos}^{-1}(4x)} \cdot \ln(\text{tanh}^{-1}x^2)$
+$y' = e^{\text{Cos}^{-1}(4x)} \cdot \frac{1}{1-(x^2)^2} \cdot 2x + \ln(\text{tanh}^{-1}x^2) \cdot e^{\text{Cos}^{-1}(4x)} \cdot \frac{-1}{\sqrt{1-(4x)^2}} \cdot 4$  
+Chain rule قاعدة السلسلة
+التفاضل البارمتري  
 ①
 
 ============================================================
-CHUNK 2 (page: 1, method: gemini-vision)
+CHUNK 2  |  page: 1  |  type: formula  |  formula: True  |  section: (none)
 ============================================================
-DIFF w.r.tox
-$\text{Cos}(3x^2) \rightarrow \frac{d}{dx} (\text{Cos}(3x^2))$
-$= -\text{Sin}(3x^2) \cdot 6x$
-
-Diff w.r.to
-$\text{Sin}7x \rightarrow \frac{d}{d(\text{Sin}7x)} (\text{Cos}3x^2)$
-
-Let $y = \text{Cos}(3x^2)$ , $u = \text{Sin}(7x)$
-?? $\rightarrow \frac{dy}{du}$
-
-$\frac{dy}{dx} = -\text{Sin}(3x^2) \cdot 6x$, $\frac{du}{dx} = 7\text{Cos}(7x)$
-
-$\frac{dy}{du} = \frac{dy/dx}{du/dx} = \frac{-\text{Sin}(3x^2) \cdot 6x}{7\text{Cos}(7x)}$
-
+$\text{Cos}(3x^2)$  
+DIFF w.r.t.x $\rightarrow \frac{d}{dx}(\text{Cos}(3x^2)) = -\text{Sin}(3x^2) \cdot 6x$  
+Diff w.r.to  
+$\text{Sin}7x \rightarrow \frac{d}{d(\text{Sin}7x)}(\text{Cos}3x^2)$  
+Let $y = \text{Cos}(3x^2)$ , $u = \text{Sin}(7x)$  
+?? $\rightarrow \frac{dy}{du}$  
+$\frac{dy}{dx} = -\text{Sin}(3x^2) \cdot 6x$, $\frac{du}{dx} = 7\text{Cos}(7x)$  
+$\frac{dy}{du} = \frac{dy/dx}{du/dx} = \frac{-\text{Sin}(3x^2) \cdot 6x}{7\text{Cos}(7x)}$  
 Ex $x = t^2 + 6t - 1$, $y = \text{Cos}(3t) + t$
 find $y'$, $y''$
 Solution.
 $\frac{dx}{dt} = 2t + 6$, $\frac{dy}{dt} = -3\text{Sin}(3t) + 1$
-(2)
+②
 
 ============================================================
-CHUNK 3 (page: 2, method: gemini-vision)
+CHUNK 3  |  page: 2  |  type: visual  |  formula: True  |  section: (none)
 ============================================================
-$y' = \frac{dy}{dx}$
-$y'' = \frac{d}{dx}(y') = \frac{d^2y}{dx^2}$
-
-$y' = \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \boxed{\frac{-3\sin(3t)+1}{2t+6}}$
-
-$y'' = \frac{d}{dx}(y') = \frac{d}{dx}\left(\frac{-3\sin(3t)+1}{2t+6}\right)$
-
-$= \frac{d}{dt}\left(\frac{-3\sin(3t)+1}{2t+6}\right) \frac{dt}{dx}$
-
-$= \frac{(2t+6)(-9\cos3t)-(-3\sin(3t)+1)\cdot 2}{(2t+6)^2} \cdot \frac{1}{2t+6}$
----
-
-$\uparrow L_1 \uparrow L_2$
-$(m_1=m_2)$
-
-$\textcircled{3}$
-
-$\uparrow L_2$
-$\boxed{m_1 \cdot m_2 = -1}$
-$\longrightarrow L_1$
+$$y' = \frac{dy}{dx}$$
+$$y'' = \frac{d}{dx}(y') = \frac{d^2y}{dx^2}$$  
+$$y' = \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{-3\sin(3t)+1}{2t+6}$$
+$$y'' = \frac{d}{dx}(y') = \frac{d}{dx}\left(\frac{-3\sin(3t)+1}{2t+6}\right)$$
+$$= \frac{d}{dt}\left(\frac{-3\sin(3t)+1}{2t+6}\right) \frac{dt}{dx}$$
+$$= \frac{(2t+6)(-9\cos(3t)) - (-3\sin(3t)+1) \cdot 2}{(2t+6)^2} \cdot \frac{1}{2t+6}$$  
+> [Figure]: Two red arrows representing lines $L_1$ and $L_2$ are shown, pointing upwards and to the right, indicating they are parallel. Below them, the condition for parallel lines is written: $(m_1=m_2)$.  
+> [Figure]: A Cartesian coordinate system is shown with two red lines, $L_1$ and $L_2$, intersecting perpendicularly at the origin. $L_1$ is horizontal and $L_2$ is vertical. A right-angle symbol indicates their perpendicularity. A red box contains the condition for perpendicular lines: $m_1 \cdot m_2 = -1$. A circled number 3 is in the bottom right corner.
 
 ============================================================
-CHUNK 4 (page: 3, method: gemini-vision)
+CHUNK 4  |  page: 3  |  type: explanation  |  formula: True  |  section: (none)
 ============================================================
-Equations of tangent line and normal line to the curve $y=f(x)$ at $(x_0, y_0)$.
+Equations of tangent line and normal line to the Curve $Y=f(x)$ at $(x_0,y_0)$.
 
-Eq. of T.l
-$\frac{y-y_0}{x-x_0} = \text{slope} = f'(x)|_{(x_0, y_0)}$
+============================================================
+CHUNK 5  |  page: 3  |  type: formula  |  formula: True  |  section: Eq. of T.L.
+============================================================
+### Eq. of T.L.
+$$ \frac{y-y_0}{x-x_0} = \text{slope} = f'(x)|_{(x_0,y_0)} $$
 
-Eq. of N.l.
-$\frac{y-y_0}{x-x_0} = -\frac{1}{f'(x)|_{(x_0, y_0)}}$
-
-Ex find equations of T.l, N.l
+============================================================
+CHUNK 6  |  page: 3  |  type: visual  |  formula: True  |  section: Eq. of N.L.
+============================================================
+### Eq. of N.L.
+$$ \frac{y-y_0}{x-x_0} = -\frac{1}{f'(x)|_{(x_0,y_0)}} $$  
+> [Figure]: A curve labeled $Y=f(x)$ is shown. A point $(x_0,y_0)$ is marked on the curve. A line labeled T.L. (Tangent Line) touches the curve at $(x_0,y_0)$. Another line labeled N.L. (Normal Line) passes through $(x_0,y_0)$ and is perpendicular to the T.L.  
+Ex find equations of T.L, N.L
 1) $f(x) = 3x^2+7$ at $x=1$.
-
-Solution
-$\therefore f(1) = 3+7=10$
-$(1, 10)$
-$f'(x) = 6x \Rightarrow f'(x)]_{(1,10)} = 6 \rightarrow \text{slope of tangent line}$
+Solution: $\therefore f(1)=3+7=10$
+The point is $(1,10)$.
+$f'(x)=6x \Rightarrow f'(x)]_{(1,10)} = \textcircled{6} \rightarrow \text{slope of tangent line}$
+$\textcircled{4}$
 
 ============================================================
-CHUNK 5 (page: 4, method: gemini-vision)
+CHUNK 7  |  page: 4  |  type: formula  |  formula: True  |  section: (none)
 ============================================================
-Slope of normal line = -1/6.
+Slope of normal line $= -\frac{1}{6}$.  
 1) Eq. of T.L.
-$\frac{y-10}{x-1} = 6$
+$$ \frac{y-10}{x-1} = 6 $$  
 2) Eq. of N.L
-$\frac{y-10}{x-1} = -1/6$.
-
-③ $x=\tan^3(t)$, $y=\sec^2(t)$, $t=\pi/4$
-find $y'$, $y''$, Equations of T.L. & N.L at
+$$ \frac{y-10}{x-1} = -\frac{1}{6} $$  
+3) $x=\tan^3(t)$, $y=\sec^2(t)$, $t=\frac{\pi}{4}$
+find $y'$, $y''$, Equations of T.L. & N.L at  
 Solution:
-$x=\tan^3(\pi/4) = 1$
-$y=\sec^2(\pi/4) = 2$
-} $\rightarrow$ point $(1,2)$
-
-$\frac{dx}{dt} = 3(\tan t)^2 \cdot \sec^2(t)$
-$\frac{dy}{dt} = 2(\sec(t)) \cdot \sec(t) \tan(t)$
-$y' = \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{2(\sec^2 t)(\tan t)}{3(\tan t)^2 \sec^2 t}$
+$$ x = \tan^3(\pi/4) = 1 $$
+$$ y = \sec^2(\pi/4) = 2 $$
+point $(1,2)$  
+$$ \frac{dx}{dt} = 3(\tan t)^2 \cdot \sec^2(t) $$
+$$ \frac{dy}{dt} = 2(\sec(t)) \cdot \sec(t) \tan(t) $$
+$$ y' = \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{2(\sec^2 t)(\tan t)}{3(\tan t)^2 \sec^2 t} $$
 
 ============================================================
-CHUNK 6 (page: 5, method: gemini-vision)
+CHUNK 8  |  page: 5  |  type: formula  |  formula: True  |  section: (none)
 ============================================================
-$y' = \frac{2}{3} \cot(t) \Rightarrow y' \Big|_{\pi/4} = \textcircled{2/3}$
-
-$y'' = \frac{d}{dx} (y') = \frac{d}{dx} \left(\frac{2}{3} \cot(t)\right)$
-
-$= \frac{d}{dt} \left(\frac{2}{3} \cot(t)\right) \frac{dt}{dx} = -\frac{2}{3} \operatorname{cosec}^2(t) \cdot \frac{1}{3(\tan t)^2 \sec^2 t}$
-
-$y'' = -\frac{2}{9} \cdot \frac{\cos^2 t}{\sin^2 t} \cdot \frac{1}{\sin^2 t} \cdot \frac{\cos^2 t}{1} = \boxed{-\frac{2}{9} \cot^4 t}$
-
+$y' = \frac{2}{3} \cot(t) \Rightarrow y']_{\pi/4} = \frac{2}{3}$  
+$y'' = \frac{d}{dx}(y') = \frac{d}{dx}\left(\frac{2}{3} \cot(t)\right)$  
+$= \frac{d}{dt}\left(\frac{2}{3} \cot(t)\right) \frac{dt}{dx} = -\frac{2}{3} \csc^2(t) \cdot \frac{1}{3(\tan t)^2 \sec^2 t}$  
+$y'' = -\frac{2}{9} \frac{\cos^2 t \cdot 1}{\sin^2 t \sin^2 t \cdot 1} = -\frac{2}{9} \cot^4 t$  
 Eq. of T. line
-$\boxed{\frac{y-2}{x-1} = 2/3}$
-
+$$ \frac{Y-2}{X-1} = \frac{2}{3} $$  
 Eq. of N. line
-$\boxed{\frac{y-2}{x-1} = -3/2}$
+$$ \frac{Y-2}{X-1} = -\frac{3}{2} $$  
 $\textcircled{6}$
 

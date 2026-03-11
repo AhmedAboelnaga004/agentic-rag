@@ -17,9 +17,11 @@ langsmith>=0.7.14
 # Pinecone client
 pinecone>=6.0.0
 
-# PDF loading
-pypdf>=5.1.0
+# PDF rendering
 pymupdf>=1.27.0
 
 # File uploads
 python-multipart>=0.0.12
+
+# Retry / rate-limit handling
+tenacity>=8.2.0
