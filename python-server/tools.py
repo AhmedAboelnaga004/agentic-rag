@@ -4,17 +4,16 @@ from langchain_core.tools import tool
 from langchain_pinecone import PineconeVectorStore, PineconeEmbeddings
 
 # ── Namespace-aware vector store factory ─────────────────────────────────────
-# Each university gets its own Pinecone namespace: "uni_{university_id}".
+# Namespace must come from database (courses -> universities), never user input.
 # We cache one store per namespace so we don't re-initialise on every call.
 _store_cache: dict[str, PineconeVectorStore] = {}
 
 
-def get_vector_store(university_id: str) -> PineconeVectorStore:
+def get_vector_store(namespace: str) -> PineconeVectorStore:
     """
-    Return (and cache) a PineconeVectorStore scoped to the given university's
+    Return (and cache) a PineconeVectorStore scoped to the given
     namespace.  The embedding model MUST match the one used during ingestion.
     """
-    namespace = f"uni_{university_id}"
     if namespace in _store_cache:
         return _store_cache[namespace]
 
@@ -42,21 +41,21 @@ def get_vector_store(university_id: str) -> PineconeVectorStore:
 
 
 @tool
-def search_knowledge_base(query: str, university_id: str, course_id: str) -> str:
+def search_knowledge_base(query: str, namespace: str, course_id: str) -> str:
     """
-    Broad semantic search within a specific university namespace, always
+    Broad semantic search within a specific namespace, always
     filtered to a single course.  Use this for general or open-ended questions
     where no specific section heading or content type is mentioned.
 
     Args:
         query:         The search query.
-        university_id: University identifier — determines the Pinecone namespace.
+        namespace:     Pinecone namespace fetched from database.
         course_id:     Course identifier — always applied as a mandatory filter
                        so results never bleed across courses.
     """
-    print(f'[Tool] Broad search | uni={university_id} | course={course_id} | query="{query}"')
+    print(f'[Tool] Broad search | ns={namespace} | course={course_id} | query="{query}"')
 
-    store = get_vector_store(university_id)
+    store = get_vector_store(namespace)
     results = store.similarity_search(
         query,
         k=10,
@@ -75,14 +74,14 @@ def search_knowledge_base(query: str, university_id: str, course_id: str) -> str
 @tool
 def search_knowledge_base_filtered(
     query: str,
-    university_id: str,
+    namespace: str,
     course_id: str,
     section_heading: str | None = None,
     content_type: str | None = None,
     has_formula: bool | None = None,
 ) -> str:
     """
-    Targeted semantic search within a specific university namespace, always
+    Targeted semantic search within a specific namespace, always
     filtered to a single course, with optional additional filters.
     Use this when the user mentions a specific section, lecture heading,
     or content type (e.g. 'examples from Lecture 3', 'all formulas in Chapter 2').
@@ -96,19 +95,19 @@ def search_knowledge_base_filtered(
 
     Args:
         query:           The search query (semantic similarity).
-        university_id:   University identifier — determines the Pinecone namespace.
+        namespace:       Pinecone namespace fetched from database.
         course_id:       Course identifier — always applied as a mandatory filter.
         section_heading: Exact section heading string stored in chunk metadata.
         content_type:    Content classification stored in chunk metadata.
         has_formula:     If true, restrict to math-heavy chunks.
     """
     print(
-        f'[Tool] Filtered search | uni={university_id} | course={course_id} | '
+        f'[Tool] Filtered search | ns={namespace} | course={course_id} | '
         f'section={section_heading} | type={content_type} | formula={has_formula} | '
         f'query="{query}"'
     )
 
-    store = get_vector_store(university_id)
+    store = get_vector_store(namespace)
 
     # course_id is ALWAYS enforced — it is not optional
     filter_dict: dict = {"course_id": {"$eq": course_id}}

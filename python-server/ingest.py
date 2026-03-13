@@ -233,13 +233,15 @@ async def ingest_data(
     course_id: str,
     course_code: str,
     course_name: str,
+    namespace: str,
     doc_title: str,
     doc_type: str,
-) -> None:
+) -> int:
     """
     Transcribe a PDF with Gemini Vision, split into structure-aware chunks,
     inject full academic metadata into every chunk, and upload to Pinecone
     under the university's dedicated namespace.
+    Returns the number of chunks uploaded.
     """
     print(f"[Ingest] ── Received PDF: {file_path}")
     print(f"[Ingest]    University: {university_id} | Course: {course_code} — {course_name}")
@@ -257,7 +259,6 @@ async def ingest_data(
 
     # 3. Inject full academic metadata into every chunk
     document_id = str(uuid.uuid4())
-    namespace = f"uni_{university_id}"
 
     for idx, chunk in enumerate(chunks):
         section_heading = _merge_section_heading(chunk.metadata)
@@ -330,6 +331,8 @@ async def ingest_data(
         print(f"[Ingest]   Uploaded batch {i // BATCH_SIZE + 1} ({len(batch)} chunks)")
 
     print("[Ingest] ✓ Ingestion Complete!")
+
+    return len(chunks)
 
     # Flush all pending LangSmith traces so they are marked complete
     try:

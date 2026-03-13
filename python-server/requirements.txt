@@ -28,3 +28,11 @@ tenacity>=8.2.0
 
 # LlamaParse (alternative ingestion pipeline)
 llama-cloud>=1.0
+
+# PostgreSQL async driver + ORM (Neon)
+psycopg[binary]>=3.2.0
+sqlalchemy[asyncio]>=2.0.33
+greenlet>=3.0.0
+
+# Auth tokens
+PyJWT>=2.10.1

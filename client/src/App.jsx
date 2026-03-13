@@ -57,6 +57,7 @@ function fixLatex(text) {
 }
 
 const EMPTY_CONTEXT = {
+  user_id: "",
   university_id: "",
   faculty_id: "",
   semester: "",
@@ -71,6 +72,9 @@ function App() {
   // is clicked. All chat and upload requests use activeCourse.
   const [courseContext, setCourseContext] = useState(EMPTY_CONTEXT);
   const [activeCourse, setActiveCourse] = useState(null);
+  const [sessionId, setSessionId] = useState("");
+  const [startingSession, setStartingSession] = useState(false);
+  const [contextError, setContextError] = useState("");
 
   // ── Chat ────────────────────────────────────────────────────────────────
   const [input, setInput] = useState("");
@@ -96,19 +100,56 @@ function App() {
   const updateCtx = (field) => (e) =>
     setCourseContext((prev) => ({ ...prev, [field]: e.target.value }));
 
-  const startSession = () => {
-    const { university_id, faculty_id, semester, course_id, course_code, course_name } =
+  const startSession = async () => {
+    const { user_id, university_id, faculty_id, semester, course_id, course_code, course_name } =
       courseContext;
-    if (!university_id || !faculty_id || !semester || !course_id || !course_code || !course_name) {
+    if (!user_id || !university_id || !faculty_id || !semester || !course_id || !course_code || !course_name) {
       alert("Please fill in all course context fields before starting.");
       return;
     }
-    setActiveCourse({ ...courseContext });
-    setMessages([]);
+
+    setStartingSession(true);
+    setContextError("");
+    try {
+      const response = await fetch("http://localhost:8000/api/validate-context", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id,
+          university_id,
+          faculty_id,
+          semester,
+          course_id,
+          course_code,
+          course_name,
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setContextError(data?.detail || "Invalid credentials/context. Please verify your details.");
+        return;
+      }
+
+      setActiveCourse({ ...courseContext });
+      if (data?.sessionId) {
+        setSessionId(data.sessionId);
+      } else if (typeof crypto !== "undefined" && crypto.randomUUID) {
+        setSessionId(crypto.randomUUID());
+      } else {
+        setSessionId(`sess_${Date.now()}`);
+      }
+      setMessages([]);
+    } catch (error) {
+      setContextError("Could not validate with server. Please make sure backend is running.");
+    } finally {
+      setStartingSession(false);
+    }
   };
 
   const changeCourse = () => {
     setActiveCourse(null);
+    setSessionId("");
+    setContextError("");
     setMessages([]);
     setUploadStatus(null);
   };
@@ -127,14 +168,17 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: trimmed,
-          university_id: activeCourse.university_id,
+          user_id: activeCourse.user_id,
+          sessionId,
           course_id: activeCourse.course_id,
-          course_name: activeCourse.course_name,
         }),
       });
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data?.detail || "Chat request failed");
+      if (data?.sessionId) {
+        setSessionId(data.sessionId);
+      }
       setMessages((prev) => [...prev, { role: "ai", text: data.answer }]);
     } catch (err) {
       setMessages((prev) => [
@@ -159,6 +203,7 @@ function App() {
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
+      formData.append("user_id", activeCourse.user_id);
       formData.append("university_id", activeCourse.university_id);
       formData.append("faculty_id", activeCourse.faculty_id);
       formData.append("semester", activeCourse.semester);
@@ -175,13 +220,17 @@ function App() {
       });
 
       const data = await response.json().catch(() => ({}));
+      if (response.status === 409) {
+        setUploadStatus({ type: "warning", text: `⚠ ${data?.detail || "This document has already been uploaded to this course's knowledge base."}` });
+        return;
+      }
       if (!response.ok) throw new Error(data?.detail || "Upload failed");
 
-      setUploadStatus(`✓ "${docTitle}" uploaded and ingested successfully.`);
+      setUploadStatus({ type: "success", text: `✓ "${docTitle}" uploaded and ingested successfully.` });
       setSelectedFile(null);
       setDocTitle("");
     } catch (err) {
-      setUploadStatus(`✗ ${err?.message ?? "Upload failed"}`);
+      setUploadStatus({ type: "error", text: `✗ ${err?.message ?? "Upload failed"}` });
     } finally {
       setUploading(false);
     }
@@ -200,14 +249,23 @@ function App() {
       <div className="appShell">
         <header className="appHeader">
           <div className="appHeaderInner">
-            <div className="appTitle">Agentic Study Assistant</div>
-            <div className="appSubtitle">Enter your course context to begin.</div>
+            <div className="headerMeta">
+              <div className="appTitle">Agentic Study Assistant</div>
+              <div className="appSubtitle">Enter your course context to begin.</div>
+            </div>
+            <div className="headerActions">
+              <a className="linkButton" href="#/admin">⚙ Admin</a>
+            </div>
           </div>
         </header>
         <main className="appMain">
           <section className="contextPanel">
             <h2 className="contextTitle">Course Context</h2>
             <div className="contextGrid">
+              <label>
+                User ID
+                <input value={courseContext.user_id} onChange={updateCtx("user_id")} placeholder="e.g. student_001" />
+              </label>
               <label>
                 University ID
                 <input value={courseContext.university_id} onChange={updateCtx("university_id")} placeholder="e.g. CAIRO_UNI" />
@@ -234,8 +292,9 @@ function App() {
               </label>
             </div>
             <button className="primaryButton" onClick={startSession}>
-              Start Session
+              {startingSession ? "Validating..." : "Start Session"}
             </button>
+            {contextError && <div className="contextError">✗ {contextError}</div>}
           </section>
         </main>
       </div>
@@ -247,15 +306,20 @@ function App() {
     <div className="appShell">
       <header className="appHeader">
         <div className="appHeaderInner">
-          <div className="appTitle">
-            {activeCourse.course_name}
-            <span className="courseTag">{activeCourse.course_code}</span>
+          <div className="headerMeta">
+            <div className="appTitle">
+              {activeCourse.course_name}
+              <span className="courseTag">{activeCourse.course_code}</span>
+            </div>
+            <div className="appSubtitle">
+              {activeCourse.faculty_id} · {activeCourse.semester} ·{" "}
+              <button className="linkButton" onClick={changeCourse}>
+                Change course
+              </button>
+            </div>
           </div>
-          <div className="appSubtitle">
-            {activeCourse.faculty_id} · {activeCourse.semester} ·{" "}
-            <button className="linkButton" onClick={changeCourse}>
-              Change course
-            </button>
+          <div className="headerActions">
+            <a className="linkButton" href="#/admin">⚙ Admin</a>
           </div>
         </div>
       </header>
@@ -322,7 +386,7 @@ function App() {
               {selectedFile ? selectedFile.name : "No file selected"}
             </div>
           </div>
-          {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>}
+          {uploadStatus && <div className={`uploadStatus ${uploadStatus.type}`}>{uploadStatus.text}</div>}
         </section>
 
         <section className="chatPanel">

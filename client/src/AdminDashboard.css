@@ -1,0 +1,237 @@
+.adminShell {
+  min-height: 100vh;
+  background: #0b0f14;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+}
+
+.adminHeader {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.adminHeader h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.adminHeader p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+}
+
+.adminHeaderActions {
+  display: flex;
+  gap: 8px;
+}
+
+.adminTabs {
+  max-width: 1180px;
+  margin: 16px auto 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.adminTab {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+.adminTab.active {
+  border-color: rgba(16, 163, 127, 0.45);
+  background: rgba(16, 163, 127, 0.14);
+  color: #7ef0cf;
+}
+
+.adminSection {
+  max-width: 1180px;
+  margin: 14px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kpiCard {
+  background: #101722;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.kpiCard span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+}
+
+.kpiCard strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 24px;
+}
+
+.splitGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.panel {
+  background: #101722;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  overflow: auto;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.panelTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 9px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+th {
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.formGrid input,
+.formGrid select,
+.panelTop select {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 9px;
+  padding: 9px 10px;
+  font-size: 13px;
+}
+
+.primaryButton {
+  border: 1px solid rgba(16, 163, 127, 0.45);
+  background: #10a37f;
+  color: #072118;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+.ghostButton {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.88);
+  border-radius: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+.statusBadge {
+  display: inline-block;
+  text-transform: capitalize;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
+
+.statusBadge.active {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.statusBadge.inactive {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+.recommendations {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.barWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.barFill {
+  height: 7px;
+  border-radius: 6px;
+  min-width: 12px;
+  background: linear-gradient(90deg, #10a37f, #22d3ee);
+}
+
+@media (max-width: 1020px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .splitGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .adminShell {
+    padding: 12px;
+  }
+
+  .kpiGrid,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+  }
+}

@@ -183,14 +183,16 @@ async def ingest_data_llamaparse(
     course_id: str,
     course_code: str,
     course_name: str,
+    namespace: str,
     doc_title: str,
     doc_type: str,
-) -> None:
+) -> int:
     """
     LlamaParse variant of the ingestion pipeline.
     Replaces the Gemini Vision transcription step with LlamaParse cloud API.
     All downstream steps (two-stage chunking, metadata injection, Pinecone upload)
     are identical to ingest.py.
+    Returns the number of chunks uploaded.
     """
     print(f"[Ingest-LP] ── Received PDF: {file_path}")
     print(f"[Ingest-LP]    University: {university_id} | Course: {course_code} — {course_name}")
@@ -206,7 +208,6 @@ async def ingest_data_llamaparse(
 
     # 3. Inject full academic metadata into every chunk (identical to ingest.py)
     document_id = str(uuid.uuid4())
-    namespace = f"uni_{university_id}"
 
     for idx, chunk in enumerate(chunks):
         section_heading = _merge_section_heading(chunk.metadata)
@@ -279,3 +280,5 @@ async def ingest_data_llamaparse(
             await asyncio.sleep(PINECONE_BATCH_DELAY)
 
     print("[Ingest-LP] ✓ Ingestion Complete!")
+
+    return len(chunks)

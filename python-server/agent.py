@@ -5,6 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.chat_history import InMemoryChatMessageHistory
 from tools import search_knowledge_base, search_knowledge_base_filtered
+import database
 
 # In-memory conversation store: { session_id -> InMemoryChatMessageHistory }
 _session_histories: dict[str, InMemoryChatMessageHistory] = {}
@@ -63,30 +64,30 @@ def _build_system_prompt(course_name: str, course_id: str) -> str:
     )
 
 
-# Cache bound tool lists per (university_id, course_id) so @tool schema
+# Cache bound tool lists per (namespace, course_id) so @tool schema
 # introspection and partial application only happen once per course.
 _tools_cache: dict[tuple[str, str], list] = {}
 
 
-def _make_course_tools(university_id: str, course_id: str):
+def _make_course_tools(namespace: str, course_id: str):
     """
-    Return LangChain tool objects with university_id and course_id pre-filled
+    Return LangChain tool objects with namespace and course_id pre-filled
     via partial application.  The LLM only sees and fills the remaining args
     (query + optional filters), so it can never hallucinate identity fields.
-    Results are cached per (university_id, course_id) pair.
+    Results are cached per (namespace, course_id) pair.
     """
-    cache_key = (university_id, course_id)
+    cache_key = (namespace, course_id)
     if cache_key in _tools_cache:
         return _tools_cache[cache_key]
     # Wrap the underlying functions with the identity fields baked in
     _broad_fn = partial(
         search_knowledge_base.func,
-        university_id=university_id,
+        namespace=namespace,
         course_id=course_id,
     )
     _filtered_fn = partial(
         search_knowledge_base_filtered.func,
-        university_id=university_id,
+        namespace=namespace,
         course_id=course_id,
     )
 
@@ -134,9 +135,22 @@ def _make_course_tools(university_id: str, course_id: str):
     return _tools_cache[cache_key]
 
 
-def _get_history(session_id: str) -> InMemoryChatMessageHistory:
+async def _get_history(session_id: str) -> InMemoryChatMessageHistory:
+    """
+    Return in-memory history for this session.
+    On first access, load persisted messages from Postgres so history
+    survives server restarts.  Subsequent accesses hit the in-memory cache.
+    """
     if session_id not in _session_histories:
-        _session_histories[session_id] = InMemoryChatMessageHistory()
+        hist = InMemoryChatMessageHistory()
+        # Replay persisted messages into in-memory history
+        rows = await database.load_session_messages(session_id)
+        for row in rows:
+            if row["role"] == "human":
+                hist.add_user_message(row["content"])
+            else:
+                hist.add_ai_message(row["content"])
+        _session_histories[session_id] = hist
     return _session_histories[session_id]
 
 
@@ -144,7 +158,7 @@ async def run_agent(
     message: str,
     session_id: str = "default",
     *,
-    university_id: str,
+    namespace: str,
     course_id: str,
     course_name: str,
 ) -> str:
@@ -153,20 +167,20 @@ async def run_agent(
     The agent can only search within the student's course (enforced at both
     prompt level and tool level).  Conversation history is kept per session.
     """
-    print(f'[Agent] uni={university_id} | course={course_id} | message="{message}"')
+    print(f'[Agent] ns={namespace} | course={course_id} | message="{message}"')
 
     # Reuse the cached LLM instance (built once per process)
     llm = _get_llm()
 
-    # Build course-locked tools (cached per university+course pair)
-    tools = _make_course_tools(university_id=university_id, course_id=course_id)
+    # Build course-locked tools (cached per namespace+course pair)
+    tools = _make_course_tools(namespace=namespace, course_id=course_id)
     llm_with_tools = llm.bind_tools(tools)
 
     # Build dynamic per-call system prompt
     system_prompt = _build_system_prompt(course_name=course_name, course_id=course_id)
 
-    # Get this session's history
-    history = _get_history(session_id)
+    # Get this session's history (loads from Postgres on first access)
+    history = await _get_history(session_id)
 
     # Build message list: system + history + new user message
     messages = (
@@ -211,9 +225,11 @@ async def run_agent(
                 "tool_call_id": tc["id"],
             })
 
-    # Persist the exchange in history
+    # Update in-memory history immediately so the next turn in the same
+    # session sees the new messages without waiting for the background write.
     history.add_user_message(message)
     history.add_ai_message(str(output))
+    # (Postgres persistence is handled by the BackgroundTask in main.py)
 
     print(f"[Agent] Response: {str(output)[:100]}...")
     return str(output)
